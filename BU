@@ -14,7 +14,7 @@
 </h1>
 
 <p>
-In this course we will discuss singular cohomology, focussing on the case of topological manifolds, deRham cohomology of smooth manifolds, and the comparison between the two that goes by the name of deRham's Theorem. .<br>
+In this course we will discuss singular cohomology, focusing on the case of topological manifolds, deRham cohomology of smooth manifolds, and the comparison between the two that goes by the name of deRham's Theorem.<br>
 Below is some preliminary information about the course, more will be posted in February. 
 </p>
   
@@ -35,9 +35,9 @@ Below is some preliminary information about the course, more will be posted in F
 <span style="font-weight: bold;">Preliminary reading
 <br>
 </span> - Fundamental group of a topological space. We will not cover this very important notion in the course, which would typically be covered before homology/cohomology in an introductory algebraic topology course. It is very important that you learn it yourself. This will be a good preparation for the first part of the course as well.
-  <br>    - Definitions of topological and smooth manifolds. We will cover these in the course, but you might want to do some reading by yourself. You can read <a href="manifolds.pdf">this</a> historical account for example.
+  <br>    - Definitions of topological and smooth manifolds. We will cover these in the course, but you might want to do some reading by yourself. You can read <a href="historyofmanifolds.pdf">this</a> historical account for example.
    <br> - Exterior algebra of a finite dimensional vector space. The linear algebra that is used in the theory of differential forms can feel a bit quick, so you might want to just start thinking about it by reading this from Wikipedia etc.
-   <br> - Here is also a historical account for differential forms.
+   <br> - <a href="samelson_forms_history.pdf">Here</a> is also a historical account for differential forms.
   <br>
 <br>  On reading historical accounts: these are generally quite difficult to understand, but for a good reason. I advise you to suffer through them as much as you can.    
 <!--
