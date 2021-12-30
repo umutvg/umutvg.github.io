@@ -22,14 +22,24 @@ Below is some preliminary information about the course, more will be posted in F
 <span style="font-weight: bold;">Course plan
 <br>
 </span>The course will consist of three parts:
-<br> Part I: Singular cohomology (4 weeks)
+<br> - Part I: Singular cohomology (4 weeks)
 <br> We will focus on the case of topological manifolds. We will definitely cover Poincare duality, cup product and Mayer-Vietoris sequence. I will also briefly mention the axiomatic characterization of singular (co)homology.
-<br> Part II: Differential forms and deRham cohomology (4 weeks)
+<br> - Part II: Differential forms and deRham cohomology (4 weeks)
 <br> We will start with the basics of differential forms on smooth manifolds and then discuss Stokes theorem and the homotopy formula. We will then define the deRham complex and discuss analogs of properties from Part I. I will briefly discuss Thom forms and intersection theory for submanifolds.
-<br> Part III: Comparison (2 weeks)
-<br> We will prove that on a smooth manifold deRham cohomology is isomorphic to singular cohomology. I will very briefly mention other ways of getting at the cohomology of a  smooth manifold using Morse and sheaf theories.
+<br>  -Part III: Comparison (2 weeks)
+<br> We will prove that on a smooth manifold deRham cohomology is isomorphic to singular cohomology. I will very briefly mention other ways of getting at the cohomology of a smooth manifold using Morse and sheaf theories.
   
   </p>
+  
+    <p>
+<span style="font-weight: bold;">Preliminary reading
+<br>
+</span> - Fundamental group of a topological space. We will not cover this very important notion in the course, which would typically be covered before homology/cohomology in an introductory algebraic topology course. It is very important that you learn it yourself. This will be a good preparation for the first part of the course as well.
+  <br>    - Definitions of topological and smooth manifolds. We will cover these in the course, but you might want to do some reading by yourself. You can read <a href="manifolds.pdf">this</a> historical account for example.
+   <br> - Exterior algebra of a finite dimensional vector space. The linear algebra that is used in the theory of differential forms can feel a bit quick, so you might want to just start thinking about it by reading this from Wikipedia etc.
+   <br> - Here is also a historical account for differential forms.
+  <br>
+<br>  On reading historical accounts: these are generally quite difficult to understand, but for a good reason. I advise you to suffer through them as much as you can.    
 <!--
 <p>
 <span>Organizer and contact: Prof. Alan Edelman 
@@ -75,157 +85,9 @@ You will be able to check your grades and registration status at the
 <a href="https://stellar.mit.edu/S/course/18/ia18/18.095/index.html">Stellar website</a> for the class.
 </p>
 
-<!-- Our class Stellar page is 
+Our class Stellar page is 
 <a href="https://stellar.mit.edu/S/course/18/ia12/18.095/index.html">here</a>. -->
 
-<h3><big>Class schedule</big></h3>
-
-<p>
-<span style="font-weight: bold;"> Lecture 1. M, Jan 8, 
-Heather Macbeth: Tangent developables
-<br>
-<i>Abstract:</i>
-</span>
-</big>
-A piece of paper can be twisted into a cone, or a cylinder.  Euler, in 1772, showed that there is a third kind of surface that can be made in this way:  the "tangent developables."  I will explain what tangent developables are, and show how to find the pieces of paper that twist into them.  Bring scissors! 
-<br>
-- <a style="font-weight: bold;" href="macbethnotes1.pdf" target="_blank">Notes from the class</a> <br>
-- Tangent surfaces of some curves:
-<i>helix</i> (<a href="https://upload.wikimedia.org/wikipedia/en/a/a5/Helixtgtdev.png">image</a>, Wolfram CDF Player <a href="http://demonstrations.wolfram.com/UnwrappingInvolutes/">interactive demonstration</a>),
-<i>twisted cubic</i> (<a href="http://math.umn.edu/~rober005/java.dir/JGV/static/tangent_surface2.png">image</a>, Java plugin <a href="http://math.umn.edu/~rober005/java.dir/JGV/tangent_surface.implicit.html">interactive demonstration</a>),
-<i>rational curve of degree four</i> (<a href="http://www.math.umn.edu/~rober005/java.dir/JGV/static/tangent_surface4.png">image</a>, Java plugin <a href="http://math.umn.edu/~rober005/java.dir/JGV/tangent_surf_deg4.html">interactive demonstration</a>),
-<i>unspecified curve</i> (<a href="https://www.youtube.com/watch?v=_Jc5NTYfOaI">video</a>).
-<br>- <a style="font-weight: bold;" href="macbethhomework.pdf" target="_blank">Homework</a> (due Jan 12)<br>
-</p>
-
-
-<p>
-<span style="font-weight: bold;"> Lecture 2. W, Jan 10, 
-Gilbert Strang: Linear algebra and neural networks
-<br>- <a style="font-weight: bold;" href="http://math.mit.edu/~gs/learningfromdata/">Lecture notes</a><br>
-- <a style="font-weight: bold;" href="http://playground.tensorflow.org">Playing with neural nets</a><br>
-- <a href="strangslides.pdf" target="_blank">Slides</a> <br>
-- <a href="stranghomework.pdf" target="_blank">Homework</a> </span>(due Jan 12) <br>
-</p>
-
-<p>
-<span style="font-weight: bold;"> Lecture 3. F, Jan 12, 
-Steven Johnson: The brachistochrone problem and the calculus of variations
-<br>- <a style="font-weight: bold;" href="http://nbviewer.jupyter.org/urls/math.mit.edu/~stevenj/Brachistochrone.ipynb">Computational examples and exercises</a><br>
-- <a style="font-weight: bold;" href="johnsonnotes2.pdf" target="_blank">Notes from the class</a> <br>
-</span>- Homework is the two problems at the end of the link (due Jan 19)<br>
-</p>
-
-<p>
-<span style="font-weight: bold;"> Lecture 4. W, Jan 17, 
-Jeremy Kepner: Mathematics of Big Data & Machine Learning
-<br>
-<i>Abstract:</i>
-</span>
-</big>
-Big Data describes a new era in the digital age where the volume, velocity, and variety of data created across a wide range of fields (e.g., internet search, healthcare, finance, social media, defense, ...)  is increasing at a rate well beyond our ability to analyze the data.  Machine Learning has emerged as a powerful tool for transforming this data into usable information.  Many technologies (e.g., spreadsheets, databases, graphs, linear algebra, deep neural networks, ...) have been developed to address these challenges.  The common theme amongst these technologies is the need to store and operate on data as whole collections instead of as individual data elements.  This lecture describes the common mathematical foundation of these data collections (associative arrays) that apply across a wide range of applications and technologies.  Associative arrays unify and simplify Big Data and Machine Learning.  Understanding these mathematical foundations allows the student to see past the differences that lie on the surface of Big Data and Machine Learning applications and technologies and leverage their core mathematical similarities to solve the hardest Big Data and Machine Learning challenges.
-<br>
-- Homework is to read about backpropagation, and write a page long summary of what you understand - use of actual equations are preferred, you can restrict yourself to ReLU. (due Jan 19)<br>
-</p>
-
-<p>
-<span style="font-weight: bold;"> Lecture 5. F, Jan 19, Dan Stroock: Some thoughts about 
-taking square roots
-<br>
-<i>Abstract:</i>
-</span>
-</big>
-The traditional algorithm for computing square roots is cumbersome.  In 
-this lecture, I will discuss an alternative approach, one that involves 
-some elementary number theory.
-<br>
-- <a style="font-weight: bold;" href="stroocknotes1.pdf" target="_blank">Lecture notes</a> <br>
-- Homework is the exercise at the end of the notes (due Jan 26)
-</p>
-
-<p>
-<span style="font-weight: bold;"> Lecture 6. M, Jan 22, 
-Juan Pablo Vielma: Modeling and Solving Discrete Optimization Problems in Practice
-<br>
-<i>Abstract:</i>
-</span>
-</big>
-Discrete optimization can model a wide range of problems in business, science and engineering. Some discrete optimization problems can be very computationally challenging in theory. However, solutions with guaranteed high-quality can sometimes be quickly found in practice using state-of-the-art solvers. In this lecture we will see how the power of these solvers can be easily accessed through the Julia-based modeling language JuMP. We will also give an overview of the mathematical concepts and tools that are the basis for the effectiveness of these solvers. 
-<br>- <a style="font-weight: bold;" href="http://www.mit.edu/~jvielma/lectures/IAP2018/slides.pdf">Slides</a><br>
-- JuMP model for <a style="font-weight: bold;" href="http://www.mit.edu/~jvielma/lectures/IAP2018/assignment_MIP.jl">assignment problem</a> and <a style="font-weight: bold;" href="http://www.mit.edu/~jvielma/lectures/IAP2018/assignment_LP_Relaxation.jl">its LP relaxation</a>
-<br>- Homework is the problems from the pages 4, 10, 12, 13, 17 of the slides - 5 questions in total, for the 2nd and 3rd ones you need to install <a style="font-weight: bold;" href="https://jump.readthedocs.io/en/latest/">JuMP</a>, you might want to use the codes above (due Jan 26)
-</p>
-
-<p>
-<span style="font-weight: bold;"> Lecture 7. W, Jan 24, 
-Thomas Beck: Eigenvalues of the Laplacian on domains
-<br>
-<i>Abstract:</i>
-</span>
-</big>
-We will define eigenvalues and eigenfunctions of the Laplacian on intervals and two dimensional domains, and see in particular why they play a role in understanding the vibrations of an elastic string or membrane. In certain cases these eigenfunctions can be computed explicitly, and we will see to what extent the eigenvalues (vibrating modes) determine the membrane itself. <br>
-- <a style="font-weight: bold;" href="becknotes.pdf" target="_blank">Lecture notes</a> <br>
-- <a style="font-weight: bold;" href="beckhomework.pdf" target="_blank">Homework</a> (due Jan 26)
-</p>
-
-
-
-<p>
-<span style="font-weight: bold;"> Lecture 8. F, Jan 26, 
-Philippe Rigollet: The Birthday Problem(s)
-<br>
-<i>Abstract:</i>
-</span>
-</big>
-What is the probability that two students in this class are born on the same day (independently of the year)? This is the birthday problem. We are going to answer this question based on the assumption that the probability of being born on a given day is the same for all 365 days of the year. What is this assumption is not true? How many students does it take to test if it holds? We’ll also give an algorithm that does that. The class will use elementary probability.<br>
-- <a style="font-weight: bold;" href="rigolletnotes.pdf" target="_blank">Lecture notes</a> <br>
-- <a style="font-weight: bold;" href="rigollethomework1.pdf" target="_blank">Homework</a> (due Feb 2)
-</p>
-
-<p>
-<span style="font-weight: bold;"> Lecture 8. M, Jan 29, 
-Scott Sheffield<br>
-- <a style="font-weight: bold;" href="http://math.mit.edu/~sheffield/tugofwarslides.pdf" target="_blank">Slides </a> <br>
-- <a style="font-weight: bold;" href="https://arxiv.org/pdf/math/0508580.pdf" target="_blank">Article </a> <br></span>
-- Homework: (1) read the first 8 pages of the article linked (2) write a couple of paragraphs outlining the argument for the proof of Theorem 2.1 (due Feb 2)
-</p>
-
-<p>
-<span style="font-weight: bold;"> Lecture 10. W, Jan 31, 
-Joern Dunkel: Brownian dynamics in physics and biology
-<br>
-<i>Abstract:</i>
-</span>
-</big>
-The dynamics of small particles in fluids affects a wide range of physical and
-biological phenomena, from sedimentation processes in the oceans to transport
-of chemical messenger substances between and within microorganisms. After
-discussing these and other relevant examples, we will introduce the mathematical equations that describe such particle motions and study their solutions for
-basic test cases.
-<br>
-- <a style="font-weight: bold;" href="dunkelnotes.pdf" target="_blank">Lecture notes</a> <br>
-- <a style="font-weight: bold;" href="dunkelhomework.pdf" target="_blank">Homework</a> (due Feb 2)
-</p>
-<br>
-<br>
-<br>
-
-
-<!-- <p>
-<big><span style="font-weight: bold;">(held in 4-270) Lecture 4. M, Jan 11, 
-<a href="http://math.mit.edu/~stevenj/">Steven Johnson </a>: Delta functions and distributions: When functions have no value(s).<br>
-<i>Abstract:</i>
-</span>
-</big>
-Changing the definition of a function from the freshman-calculus definition, to something called a "distribution," circumvents a lot of annoyances in analysis. It allows you to define delta functions (e.g. the density of a "point mass"), differentiate discontinuous functions, interchange limits and derivatives, and more. This is essentially what scientists and engineers are "really" doing, though they never tell you!
-<br><br>
-<a style="font-weight: bold;" href="http://math.mit.edu/~stevenj/18.303/delta-notes.pdf">Lecture notes.</a><br>
-<a style="font-weight: bold;" href="./lec4/delta-pset-18.095-2016.pdf">Homework 2, Part 2.</a>
-</p>
-
-<p> Homework 2 (with parts 1-3) due Friday 1/15 by 4pm in 4-174
-</p> -->
--->
 
 <!--
 <script type="text/javascript">
