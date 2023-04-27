@@ -1,0 +1,1179 @@
+\documentclass[12pt]{amsart}
+\usepackage{graphicx}
+\usepackage{etoolbox}
+\usepackage{tikz-cd}
+\usetikzlibrary{matrix,arrows,decorations.pathmorphing}%Yalım ekledi
+\usepackage{mathtools}
+\usepackage{amssymb}
+\usepackage{faktor}
+\usepackage{stmaryrd}%İbrahim ekledi
+\graphicspath{ {./images/} }
+
+\newtheorem{lemma}{Lemma}
+\newtheorem{proposition}{Proposition}
+\newtheorem{corollary}{Corollary}
+\newtheorem{theorem}{Theorem}
+\newtheorem{non-theorem}{Non-Theorem}
+\newtheorem{conjecture}{Conjecture}
+\newtheorem{claim}{Claim}
+\newcommand{\R}{\mathbb{R}} %Yalım ekledi 
+
+\theoremstyle{remark}
+\newtheorem{definition}{Definition}
+\newtheorem{remark}{Remark}
+\newtheorem{exercise}{Exercise}
+\newtheorem*{exercise*}{Exercise} %yazilmasi gerekmeyen exerciselar icin
+\newtheorem{problem}{Problem}
+\newtheorem{question}{Question}
+\newtheorem*{answer}{Answer}
+\newtheorem{example}{Example}
+
+\AtEndEnvironment{question}{\null\hfill\qedsymbol}
+\AtEndEnvironment{remark}{\null\hfill\qedsymbol}
+\AtEndEnvironment{definition}{\null\hfill\qedsymbol}
+\AtEndEnvironment{exercise}{\null\hfill\qedsymbol}
+\AtEndEnvironment{example}{\null\hfill\qedsymbol}
+\AtEndEnvironment{corollary}{\null\hfill\qedsymbol}
+
+\title{LECTURE NOTES - MATH 58T (SPRING 2023)} 
+\author{UMUT VAROLGUNES}
+\begin{document}
+\maketitle
+{\small\tableofcontents}
+\addtocontents{toc}{\protect\setcounter{tocdepth}{1}}
+\newpage
+
+
+\section{Lecture 1: Vector fields and differential forms}
+Please note that this is only a quick review. Hopefully it is mostly familiar and you can learn quickly if not. 
+
+\subsection{Fundamental results of ODE theory.}
+
+If $U\subset \mathbb{R}^n$ is open, a (smooth) vector field on $U$ is a smooth map $V:U\to \mathbb{R}^n$, equivalently a section of $TU\to U$. Colloquially, a vector field is a choice of smoothly varying collection of vectors at every point of $U$. 
+
+We are interested in the particle trajectories in $U$ whose velocity at any time is equal to the vector specified by $V$ at the point it's at. Finding such trajectories is by definition solving the following ODE for $\gamma:I\to U$, where $I$ is a real interval: \begin{align}\label{ODE} \gamma'(t)=V(\gamma(t)),
+\end{align}for all $t\in I$.
+\begin{remark}
+A special class of vector fields are linear ones, i.e. linear maps $V: \mathbb{R}^n\to \mathbb{R}^n$. You have studied such ODE's in detail and it might be a good time to remember what was going on there (you should have the full picture for $n=2$).
+\end{remark}
+
+ \begin{theorem}
+\begin{itemize}
+\item (existence) For every $x_0\in U$, there exists an $\epsilon>0$ such that the ODE \eqref{ODE} has a solution $\gamma: (-\epsilon,\epsilon)\to U$ satisfying the initial condition $\gamma(0)=x_0.$
+\item (uniqueness) For any  $\epsilon>0$, the initial value problem as in the previous bullet point has at most one solution\footnote{note that for large $\epsilon$ it may have no solutions!}.
+\item (smooth dependence on initial data) For every $x_0\in U$, there exists an $\epsilon>0$ and a neighborhood $U_{x_0}\subset U$ of $x_0$ such that the solution of the IVP with initial condition $\gamma(0)=x$ on the interval $(-\epsilon,\epsilon)$ exists for all $x\in U_{x_0}.$ Moreover, the induced map $$(-\epsilon,\epsilon)\times U_{x_0}\to U$$ is a smooth map. 
+\end{itemize}
+\end{theorem}
+
+\begin{question}\label{qrect}
+Prove the following rectification theorem. Assuming that $V(x_0)\neq 0$, one can find a coordinate system $y_1,\ldots ,y_n$ at $x_0$ such that $V=\frac{\partial}{\partial y_1}$ in the domain of this coordinate system.
+\end{question}
+
+\begin{remark}We call the points where the vector field vanishes its singularities. Finding a normal form near singularities is much more difficult. For example, it is not true that every smooth vector field is equal to a linear one in a different coordinate system if the coordinate change is required to be smooth. This is possible using a continuous change of coordinates if the singularity is hyperbolic due to Hartman-Grobman theorem, which is a non-trivial result.\end{remark}
+
+\subsection{Vector fields on manifolds and their flows}
+
+The main change of perspective in differential topology from a standard ODE course will be to study the solutions of an ODE with all possible initial conditions at the same time (rather than solving a single initial value problem). This leads to the notion of the flow of a vector field. The well-definedness and good behaviour of flows rely heavily on the smooth dependence on initial data property, which may not have been at the forefront thus far in your thinking of the basic theory of ODE's.
+
+
+\begin{definition}
+Let $X$ be a smooth manifold. A smooth section of $TX\to X$ is called a (smooth) vector field.
+\end{definition}
+
+
+\begin{question}
+Can you always push forward a vector field by a smooth map? Why? How about a diffeomorphism?
+\end{question}
+
+Let us go through what it means to write a vector field on $X$ in local coordinates. This is mostly about notation. Note that if we take a chart $(U,\phi)$ on $X$, we obtain a vector field on $U$ by restriction, and one on $\tilde{U}=\phi(U)\subset \mathbb{R}^n$ by construction of $TX$. 
+
+Let us call $x_1,\ldots, x_n$ the coordinate functions\footnote{Great confusion is caused by denoting the coordinate functions and the coordinates of an arbitrary point in $\mathbb{R}^n$ with the same symbols. This corresponds to the following: we usually denote the value of the coordinate function $x_i$ at point $x$ by $x_i$. In the real line with coordinate function $x$ we sometimes make it even more confusing and denote the point which takes value $x$ under the coordinate function $x$ by just $x$. All three objects would ideally get their own symbol. } on the Euclidean space that $\tilde{U}$ resides. Then, it is customary to denote the vector field on $\tilde{U}$ equal to $(1,0,0\ldots ,0)$ everywhere by $\frac{\partial}{\partial x_1}$, $(0,1,0,\ldots ,0)$ everywhere by $\frac{\partial}{\partial x_2}$ and so on. We can think about these constant vector fields also as living on $U$. 
+
+Notice that any vector field on $\tilde{U}$ can be written uniquely as $$v_1\frac{\partial}{\partial x_1}+\ldots +v_n\frac{\partial}{\partial x_n},$$ for functions $v_i:\tilde{U}\to \mathbb{R}$, $i=1,\ldots ,n$. In particular, any  vector field on $X$ can be uniquely written in this form in the chart $(U,\phi)$.\\
+
+Given a vector field $V:X\to TX$, we can write down the following differential equation for smooth maps $\gamma: I\to X$: \begin{equation}\label{MODE}\gamma'(t)=V(\gamma(t)),\end{equation} for every $t\in I$, where $I$ is an interval inside the real line with coordinate $t$, where $\gamma'(t):=d\gamma_t\left(\frac{\partial}{\partial t}\right).$ In coordinate charts this equation is the same as the one we considered in the last class.
+
+If we write $V$ in a coordinate chart $(U,\phi)$ as above$$V(x)=v_1(x)\frac{\partial}{\partial x_1}+\ldots +v_n(x)\frac{\partial}{\partial x_n},\text{ for all } x\in\tilde{U},$$ and denote the components of $\gamma$ by $\gamma_i$ in the same chart, the equation \eqref{MODE} is equivalent to $$\gamma_i'(t)=v_i(\gamma(t)), \text{ for }i=1,\ldots n$$ which might be  a more familiar form of an ODE (``a system of ODE's").
+
+Solutions of the equation \eqref{MODE} are called integral curves. We know that for any $x_0\in X$, there is an $\epsilon>0$ and an integral curve $\gamma:(-\epsilon,\epsilon)\to X$ satisfying $\gamma(0)=x_0$. Note that an interval can sometimes be extended to larger intervals in time. If it cannot be extended we will call the integral curve maximal.
+\begin{question}\label{qescape}
+Explain why the domain of a maximal integral curve should be an open interval. Then using the same idea prove the following lemma.
+\end{question}
+
+\begin{lemma}[Escape lemma]
+Let $X$ be a smooth manifold and $V:X\to TX$ be a vector field. Assume that the domain of definition of a maximal integral curve $\gamma$ is not the entire real line. Then prove that the image of $\gamma$ is not contained in a compact subset of $X$.
+\end{lemma}
+
+We finally come to the fundamental theorem of flows.
+
+\begin{theorem}\label{flowthm}Let $X$ be a smooth manifold and $V:X\to TX$ be a vector field. Then there exists a unique  subset $\mathcal{U}\subset \mathbb{R}\times X$ containing $\{0\}\times X$ and a map $\Phi: \mathcal{U}\to X$ such that $\Phi(0,x)=x$ for all $x\in X$ with the following properties:
+
+\begin{enumerate}
+\item $\mathcal{U}\subset \mathbb{R}\times X$ is open.
+\item $\Phi: \mathcal{U}\to X$ is smooth.
+\item For any $(t,x)\in \mathcal{U}$, $$d\Phi_{(t,x)}\left(\frac{\partial}{\partial t}\right)=V(\Phi(t,x))).$$
+\item For any $x\in M$, $I_x:=\mathcal{U}\cap (\mathbb{R}\times\{x\})\subset \mathbb{R}$ is connected and the integral curve of $V$ given by $$\Phi(\cdot,x):I_x\to X$$ cannot be extended to a larger interval (i.e. it is maximal).
+\end{enumerate}
+
+\end{theorem}
+
+\begin{question}Make sure you really understand what is meant by the vector field $\frac{\partial}{\partial t}$ in $\mathbb{R}\times X$. 
+\end{question}
+
+I would suggest taking this as a black box for the time. This is not because the proof is hard (see Theorem 17.9 in Lee.) As expected, the proof relies on the existence, uniqueness and the smooth dependence on initial data properties discussed in the previous lecture. Your priority should be to understand the statement. Rigorous proof can wait, but its basic inputs should also be clear.
+
+\begin{definition}
+The map $\Phi:\mathcal{U}\to X$ from Theorem \ref{flowthm} is called the flow of the vector field $V$.
+\end{definition}
+
+\begin{question}
+Explicitly describe the flow (including its domain) of the vector fields $\frac{\partial}{\partial x_1}$, $x_1\frac{\partial}{\partial x_1}+x_2\frac{\partial}{\partial x_2}$ and $-x_2\frac{\partial}{\partial x_1}+x_1\frac{\partial}{\partial x_2}$ on the open unit disk in the plane with coordinates $x_1$ and $x_2$.
+\end{question}
+\begin{remark}
+The picture in your mind should be clear: the points in the manifold are all flowing (backwards and forwards in time) in the directions (and with speeds) dictated by the vector field. The only tricky point is that the integral curves might stop existing after some time. This last point is a common occurance, not just some theoretical what if - just think about $\frac{\partial}{\partial x}$ on an open interval finite in either side in the real line. If you want to come up with examples that look less clear, then use that any connected open interval is diffeoemorphic to the real line.
+\end{remark}
+\begin{question}\label{qinfty}
+Find a diffeomorphism $[1,\infty)\to [0,1)$ which sends the vector field $V(x)=x^2\frac{\partial}{\partial x}$ to a constant one. Explain the ``blowing-up" of the unique solution of the IVP $$x'=x^2\text{ with } x(0)=1$$ in this light.
+\end{question}
+
+\begin{definition}
+Let $X$ be a smooth manifold and $V:X\to TX$ be a vector field. We call $V$ complete, if the domain of definition of all maximal integral curves are the entire real line. This is equivalent to saying that the flow of $V$ is defined on the entire $\mathbb{R}\times X$.
+\end{definition}
+
+\begin{question}
+Prove that compactly supported vector fields are complete using the Escape lemma. What does this say about vector fields on compact smooth manifolds?
+\end{question}
+
+The following actually is used in the proof of the fundamental theorem of flows, so logically it is not entirely accurate to state it here, but conceptually it makes full sense. 
+
+\begin{proposition}
+Let $X$ be a smooth manifold and $V:X\to TX$ be a complete vector field. Then prove that the flow $\mathbb{R}\times X\to X$ of $V$ defines a Lie group action of $\mathbb{R}$ with its additive group structure on $X$. 
+\end{proposition}
+
+This is a consequence of the uniqueness property of ODE's and equation \eqref{MODE} being autonomous, i.e. it does not matter at what time a particle starts out at a point, its trajectory looks the same. More succintly, if $\gamma(t)$ is an integral curve, so is $\gamma(t-\Delta)$ for any $\Delta$, and it is the unique one with the initial condition $\tilde{\gamma}(\Delta)=\gamma(0)$.
+
+
+
+\begin{remark}
+Of course, there is a statement for non-complete vector fields but it is a bit confusing to state, so I omitted it.
+\end{remark}
+
+\begin{question}\label{qpres}
+Let $X$ be a smooth manifold,  $V:X\to TX$ be a complete vector field with flow $\Phi:\mathbb{R}\times X\to X$, and define $\Phi_t:=\Phi(t,\cdot): X\to X$. Prove that for every time $t$, $\Phi_t$ is a diffeomorphism. Moreover, show that $\Phi_t$ preserves $V$.
+\end{question}
+
+
+\subsection{Vector fields as derivations}
+
+Let us recall the  the directional derivative operation. This operation takes in a smooth function $f:X\to \mathbb{R}$ and a tangent vector $v\in T_xX$ at some $x\in X$ and produces a real number $v\cdot f$ which measures the change of the function in the direction of the vector. If you write in coordinates, this really is the directional derivative from calculus but we give the following coordinate free definition: $$df_x(v)=(v\cdot f) \frac{\partial}{\partial t}.$$
+
+We also know that directional derivative satisfies the Leibniz rule and is $\mathbb{R}$-linear in both variables. There is a converse to this. Let us denote the $\mathbb{R}$-algebra of smooth functions on a smooth manifold $X$ by $$C^{\infty}(X,\mathbb{R}).$$
+
+\begin{lemma}
+Let $L:C^{\infty}(X,\mathbb{R})\to\mathbb{R}$ be an $\mathbb{R}$-linear map, which satisfies the Leibniz rule at $x\in X$: for any $\phi,\psi\in C^{\infty}(X,\mathbb{R})$, $$L(\phi\psi)=\phi(x)L(\psi)+L(\phi)\psi(x).$$ Then, there exists a unique $v\in T_xX$ such that for any $\phi\in C^{\infty}(X,\mathbb{R})$ $$L(\phi)=v\cdot\phi.$$
+\end{lemma}
+\begin{question}
+Show that $L$ vanishes on constant functions.
+\end{question}
+\begin{proof}First, note that if $\phi$ vanishes in a neighborhood $U$ of $x$, then $L(\phi)=0$. To see this take a smooth function $\rho$ which is $1$ on $X-U$ and is zero in a smaller neighborhood of $x$. We have $\phi=\rho\phi$, which proves the claim using the Leibniz rule. By linearity, we get that if $\phi$ and $\psi$ are the same in a neighborhood of $x$, then $L$ sends them to the same number. 
+
+Let us prove the lemma when $X=\mathbb{R}^n$ and $x=0$. The key to this is the following weak Taylor expansion property. For any $\phi\in C^{\infty}(\mathbb{R}^n,\mathbb{R})$, there exists real numbers $a,b_1,\ldots ,b_n$ and $f_1,\ldots , f_n\in  C^{\infty}(\mathbb{R}^n,\mathbb{R})$ such that $f_i(0)=0$ for all $i=1,\ldots ,n$ and $$f=a+\sum b_ix_i+\sum x_i f_i,$$ where $x_1,\ldots, x_n$ are the coordinate functions. Using the Leibniz rule and $\mathbb{R}$-linearity, we get that $L$ is canonically determined by what it does on linear functions $\sum b_ix_i$. Clearly, there exists a vector $v\in T_0\mathbb{R}^n$ such that $v\cdot \phi=L(\phi)$ on linear functions, but we proved that then this has to be the case for all smooth functions.
+\end{proof}
+\begin{question}
+Finish the proof.
+\end{question}
+
+\begin{definition}
+Let $A$ be an $\mathbb{R}$-algebra. An $\mathbb{R}$-linear map $D:A\to A$ is called a derivation if it satisfies $$D(ab)=aD(b)+D(a)b$$ for all $a,b\in A.$ Let us denote their set by $Der(A)$. Note that $Der(A)$ is naturally an $A$-module.
+\end{definition}
+
+\begin{lemma}
+If $f,g\in Der(A)$, then the commutator $f\circ g- g\circ f$ is also a derivation.
+\end{lemma}
+\begin{question}
+Do it!
+\end{question}
+
+Let us now introduce the notation that if $E\to B$ is a vector bundle, we denote its set of smooth sections by $\Gamma(E)$. For example $\Gamma(TX)$ is the set of vector fields on $X$ (as above), whereas $\Gamma(T^*X)$ is the one of covector fields. $\Gamma(E)$ is naturally a $C^{\infty}(B,\mathbb{R})$-module.
+
+\begin{question}\label{qsectionvect}
+Let $E\to B$ and $E'\to B$ two vector bundles. Assume that we are given a $C^{\infty}(B,\mathbb{R})$-module map $T: \Gamma(E)\to \Gamma(E')$. Prove that $T$ is obtained from a vector bundle map $E\to E'$ (i.e. a smooth, fiber-preserving and fiberwise linear map). Hopefully the converse is clear. This is Proposition 5.16 from Lee.
+\end{question}
+
+Here is the upshot of the discussion so far. There is an isomorphism of $C^{\infty}(X,\mathbb{R})$-modules $$\Gamma(TX)\to Der(C^{\infty}(X,\mathbb{R})).$$
+
+\begin{question}
+Make sure you can parse this and prove it using the results above.
+\end{question}
+
+
+Hence, smooth vector fields are precisely the derivations on the algebra of smooth functions. You can think of such derivations as homogeneous first order differential operators acting on real valued functions. This is of course an entirely different viewpoint on vector fields (also very useful).
+
+Let us finish by noting that for free we obtain an $\mathbb{R}$-bilinear operation $$[\cdot,\cdot]:\Gamma(TX)\times \Gamma(TX)\to \Gamma(TX)$$ called the Lie bracket of vector fields. We will explore this operation and its geometric meaning next time.
+
+\begin{question}
+Let $x,y$ be the coordinate functions on $\mathbb{R}^2$. Show that the Lie bracket of $\frac{\partial }{\partial x}$ and $\frac{\partial }{\partial y}$ is the zero vector field. Find two vector fields on $\mathbb{R}^2$ with a non-vanishing Lie bracket.
+\end{question}
+
+\begin{question}\label{qliealgebra}
+Read about the Lie algebra of a Lie group from Lee, pg. 93. Describe the Lie algebra of $SO(3)$.
+\end{question}
+
+\subsection{Lie derivative of a differential form}
+
+Let us now also define the Lie derivative of a differential form $\alpha$ along a vector field $V$. This is an $\mathbb{R}$-bilinear operation. If $\alpha$ is a $k$-form the result is a differential $k$-form. The idea for the definition is the same as the Lie derivative of a vector field along a vector field.
+
+Let $\Phi_V:\mathcal{U}\to M$ denote the flow of $V$. We define for every $p\in X$, $$\mathcal{L}_V\alpha(p):=\lim_{t\to 0}\frac{(\Phi(t,\cdot)^*\alpha)(p)-\alpha(p)}{t}.$$
+
+\begin{question}
+What is the Lie derivative of a function along a vector field?
+\end{question}
+
+\begin{question}
+Prove that $\mathcal{L}_V$ is a derivation on differential forms, i.e. if  $\alpha\in\Omega^k(X)$ and $\beta\in\Omega^l(X)$, then $$\mathcal{L}_V(\alpha\wedge\beta)=\mathcal{L}_V(\alpha)\wedge\beta+\alpha\wedge\mathcal{L}_V(\beta).$$
+\end{question}
+
+\begin{question}\label{qleibnizvectorform}
+Prove that the Lie derivative operation also satisfies the following Leibniz rule. If $V,W$ vector fields, and $\alpha$ a covector field, then $$V\cdot \alpha(W)= (\mathcal{L}_V\alpha)(W)+\alpha(\mathcal{L}_VW).$$Generalize the result to differential $k$-forms.
+\end{question}
+
+Finally, also note that given a vector field $V$ and differential $k$-form $\alpha$, we can define the interior product $\iota_V\alpha$ pointwise: $$\iota_V\alpha(p):=\iota_{V(p)}\alpha(p).$$
+
+The following important result is generally called Cartan's magic formula.
+
+\begin{theorem}
+If $V$ is a vector field and $\alpha$ is a differential form: $$\mathcal{L}_V\alpha=\iota_Vd\alpha+d(\iota_V\alpha).$$
+\end{theorem}
+
+\begin{proof}
+The formula holds at the interior points of the set of zeros of $V$. Both sides are $\mathbb{R}$-linear in $\alpha$. Moreover, note that both $\mathcal{L}_V\cdot$ and $\iota_Vd\cdot+d(\iota_V\cdot)$ are derivations on $\Omega^*(X)$ - former was mentioned above and the latter is because the anti-commutator of two anti-derivations is a derivation. Therefore, using also the continuity of both sides, it suffices to check the formula for $\alpha$ being a smooth function or one of the $1$-forms $dx_1,\ldots ,dx_n$ in some coordinate neighborhood of every point where $V$ does not vanish. Choosing coordinates that rectify $V$ this becomes trivial.
+\end{proof}
+
+\begin{question}\label{qintegralcartan}This is an integral version of Cartan's formula.
+
+Let $X$ be a compact oriented $k$-manifold with boundary embedded inside a manifold $M$. Take a vector field $v$ on $M$, and a time dependent $k$-form $\omega_t$. Prove: \begin{align*}
+\frac{d}{dt}\mid_{t=0}\int_{X(t)}\omega_t=\int_{\partial X}\iota_v\omega_0+\int_X \iota_vd\omega_0+\int_X \frac{d}{dt}\mid_{t=0}\omega_t,
+\end{align*} where $X(t)$ is the image of $X$ under the time-$t$ flow of $v$.
+
+Prove the special cases where $\omega$ is time independent, and (i) $\omega$ is closed or (ii) $\partial X$ is empty or (iii) $M=\mathbb{R}^2, X=\{0\}\times [0,1]$ without using Cartan's formula. 
+\end{question}
+
+
+\subsection{Homotopy formula in deRham theory}
+Let $f: M\to N$ be a smooth map between smooth manifolds. Then we can check the following in local coordinates easily.
+
+\begin{proposition}
+Pullback map $f^*:\Omega^*(N)\to \Omega^*(M)$ intertwines the exterior differentials: $$df^*=f^*d.$$ Therefore, $f^*$ is a chain map and induces a map on deRham cohomologies $$H^*_{dR}(N)\to H^*_{dR}(M).$$
+\end{proposition}
+
+\begin{remark} You might want to refresh your memory about chain homotopies between two chain maps at this point.\end{remark}
+
+
+
+We know that homotopic continuous maps induce chain homotopic maps on the singular cochain complex. We will show that there is an analogue for the deRham complex.
+
+Let $F:\mathbb{R}\times M\to N$ be smooth, and define $\iota_t:M\to \mathbb{R}\times M$ as the inclusion to $t$-level and $f_t:M\to N$ as $F\circ\iota_t$. Let us also define  $tr_t:\mathbb{R}\times M\to \mathbb{R}\times M$ be the map that increases $\mathbb{R}$ by $t$. Now let us compute:
+
+\begin{align*}
+\frac{d}{dt}|_{t=t_0}f_t^*\omega&=\frac{d}{dt}|_{t=t_0}\iota_0^*tr_{t}^*F^*\omega\\
+&=\iota_0^*\frac{d}{dt}|_{t=0}tr_{t_0}^*tr_{t}^*F^*\omega\\&=\iota_0^*tr_{t_0}^*\mathcal{L}_{\frac{\partial}{\partial t}}F^*\omega\\&=\iota_{t_0}^*(\iota_{\frac{\partial}{\partial t}}dF^*\omega+d(\iota_{\frac{\partial}{\partial t}}F^*\omega))\\&=(\iota_{t_0}^*\iota_{\frac{\partial}{\partial t}}F^*)d\omega+d(\iota_{t_0}^*\iota_{\frac{\partial}{\partial t}}F^*)\omega
+\end{align*}
+
+This is called the infinitesimal homotopy formula. We get the full homotopy formula by integrating.
+
+
+\begin{proposition}
+Let $F:[0,1]\times M\to N$ be smooth, and define $\iota_t:M\to [0,1]\times M$ as the inclusion to $t$-level and $f_t:M\to N$ as $F\circ\iota_t$. There exists an $\mathbb{R}$-linear map $$h:\Omega^*(N)\to\Omega^{*-1}(M)$$ such that $$f_1^*\omega-f_0^*\omega=hd\omega+dh\omega.$$
+An explicit formula for $h$ is given in the proof.
+\end{proposition}
+\begin{proof}
+We can extend $F$ to a smooth map $F:\mathbb{R}\times M\to N.$ 
+Integrating the infinitesimal homotopy formula (the extension does not appear at all): 
+\begin{align*}
+\int_{0}^{1}\left(\frac{d}{dt}|_{t=t_0}f_t^*\omega\right) dt_0&=\int_{0}^{1}\left((\iota_{t_0}^*\iota_{\frac{\partial}{\partial t}}F^*)d\omega\right) dt_0+\int_{0}^{1}\left(d(\iota_{t_0}^*\iota_{\frac{\partial}{\partial t}}F^*)\omega\right) dt_0\\&=\int_{0}^{1}\left((\iota_{t_0}^*\iota_{\frac{\partial}{\partial t}}F^*)d\omega\right) dt_0+d\int_{0}^{1}\left(\iota_{t_0}^*\iota_{\frac{\partial}{\partial t}}F^*\omega\right) dt_0.
+\end{align*}
+
+We therefore define $$h(\alpha):=\int_{0}^{1}\left(\iota_{t_0}^*\iota_{\frac{\partial}{\partial t}}F^*\alpha\right) dt_0.$$
+
+The desired relationship follows since by the fundamental theorem of calculus:
+
+\begin{align*}
+\int_{0}^{1}\left(\frac{d}{dt}|_{t=t_0}f_t^*\omega\right) dt_0&=f_1^*\omega-f_0^*\omega.
+\end{align*}
+\end{proof}
+
+\begin{corollary} 
+Homotopic smooth maps induce the same map on deRham cohomology.
+\end{corollary}
+
+\begin{corollary}[Poincare lemma]
+Let $U\subset \mathbb{R}^n$ be star-shaped, which means that for some point $p\in U$, which we can assume without loss of generality to be the origin, and for every $c\leq 1$, $$cU\subset U.$$
+
+Then $H^*_{dR}(U)=\mathbb{R}[0].$ This means that the homology is trivial in all non-zero degrees and is one dimensional in the zeroth degree.
+\end{corollary}
+
+\section{Lecture 2: Moser argument}
+\subsection{Vector fields depending on parameters}
+
+ One often encounters vector fields that depend on extra parameters on a smooth manifold $X$. To be rigorous these are smooth maps $S\times X\to TX$, where $S$ is a smooth manifold and fixing the parameter to any $s\in S$, we obtain a section $X\to TX$.
+
+For simplicity assume that $S$ is an open subset of $\mathbb{R}^N$ with coordinates $s_1,\ldots,s_N$. On a coordinate chart in $X$ with coordinates $x_1,\ldots ,x_n$, then this $S$-family of vector fields look like $$\sum_i f_i(s_1,\ldots,s_N,x_1,\ldots,x_n)\frac{\partial}{\partial x_i}.$$
+
+We want to of course talk about the flows of these vector fields, specifically we want make a statement that the flows of vector fields depend smoothly on parameters. This sort of thing can be a bit confusing but all you have to do is the following.
+
+Consider the $S$-family of vector fields as a single vector field on $S\times X$ in the only possible way. Now for this vector field we have developed the theory of flows. All we need to do is to use the results that we proved there.
+
+\begin{question}
+Assume that $X$ is closed so that there is no issue of completeness (just so that the result you get can be expressed easily). Construct the flow map $$\mathbb{R}\times S\times X\to X$$ so that if we fix $s$, what we obtain is the flow of the vector field of the parameter $s$. Prove that this map is smooth using our results for the flow of a single vector field. 
+\end{question}
+
+This is a useful technique in general: if you have something that depends on extra parameters, you can just think of those parameters as extra degrees of freedom in your space and consider one static something.
+
+An important special case of vector fields depending on parameters is time-dependent vector fields. This is the case where $S$ is one-dimensional. Typically $S$ also has a specified coordinate given to us, which we think of as time. Let us just take $S=\mathbb{R}$ for simplicity. Here, there is something more interesting we can consider than just looking at the flows of the vector fields for each value of the parameter. We can change the vector field as we are flowing in the sense that our trajectories (integral curves) are now tangent at time $t$ to the vector field at time $t$ (which we call $V_t$.)
+
+\begin{question}
+Assuming $X$ is closed again, show that this defines a smooth map $$\mathbb{R}\times X\to X.$$ Do this by defining the vector field $$\frac{\partial}{\partial t}+V(t)$$ on $\mathbb{R}\times X$, and relating the flow of this vector field on $\mathbb{R}\times X$ to the time dependent flow. Notice that the map $\mathbb{R}\times X\to X$  is not an action of $\mathbb{R}$ for a time dependent flow.
+\end{question}
+
+\begin{remark}
+If you understand this method, you should be able to use it when completeness is not given.
+\end{remark}
+
+\subsection{Moser argument}
+
+\begin{definition}
+Let $X^n$ be an orientable smooth manifold. Then $\mu \in \Omega^n(X)$ is called a volume form if $\mu_x\neq 0$ for all $x\in X$.  
+\end{definition}
+\begin{remark}
+Recall that, in fact, orientability is equivalent to the existence of a volume form.
+\end{remark}
+Now, assume $X^n$ is closed, connected and oriented. Recall that $H^n_{dR}(X)\simeq \R$ by $[\omega]\mapsto \int_X\omega$. Note that this map is well-defined since if $[\omega]=[\omega']$, then $\omega-\omega'=d\beta$ for some $\beta\in \Omega^{n-1}(X)$, and $\int_X d\beta=0$ by the Stokes' Theorem (because $X$ is closed).
+
+Moser invented the argument that goes by his name to prove the following theorem.
+\begin{theorem}[Moser's theorem on volume forms]
+Let $\mu_0,\mu_1$ be two volume forms with $\int_X\mu_0=\int_X\mu_1$. Then, there exists a diffeomorphism $\varphi:X\to X$ such that $\mu_0=\varphi^*\mu_1$.
+\end{theorem}
+\textbf{Idea.} We are going to find a time-dependent vector field $V_t$ such that the time $1$-map of its flow is the desired $\varphi$. (This is Moser's argument.)
+\begin{remark}
+There is a similar result for symplectic forms and contact structures. 
+\end{remark}
+We will first generalize the question as follows: Let $\omega_0$ be a $k$-form, and $\omega_t\coloneqq\omega_0+d\beta_t$, where $\beta_t$ is a family of smoothly varying $k-1$-forms.
+\begin{example}
+Let $\mu_0,\mu_1$ be two volume forms with $\int_X\mu_0=\int_X\mu_1$ that satisfies . Then $\mu_1-\mu_0=d\beta$. Then, we can take $\mu_t\coloneqq \mu_0+td\beta= \mu_0+d(t\beta)$. 
+\end{example}
+We try to find an isotopy $\varphi_t:X\to X$ such that $\varphi_0=id$ and $\varphi_1=\varphi$ with the property $$\omega_0=\varphi_t^*\omega_t.$$ 
+
+This isotopy has to be generated by a time-dependent vector field $V_t$. Indeed, $V_t(x)$ is simply equal to the velocity vectors of the trajectories given by the family of diffeomorphisms $\varphi_t$. This vector field generates the given isotopy. 
+
+We want to find an isotopy such that $\frac{d}{dt}\varphi_t^*\omega_t=0$. If we can achieve this goal, then we will obtain $\varphi_1^*\omega_1=\omega_0$ as desired. The problem is that this might not be always possible. We will now see, along the way, when we can make this work. Towards this goal, let's try to have a better understanding of $\frac{d}{dt}\varphi_t^*\omega_t$.
+
+Note that $\frac{d}{dt}(\varphi_t^*\omega_t)|_{t=t_0}=\frac{d}{dt}(\varphi_{t_0}^*\omega_t)|_{t=t_0}+\frac{d}{dt}(\varphi_t^*\omega_{t_0})|_{t=t_0}$, here we are fixing one of $\varphi_t$ and $\omega_t$ and measure the change in the other and then sum them up. By interchanging the diffeomorphism and the derivative, and noticing that the second term can be written in terms of the Lie derivative, we obtain
+\begin{equation*}
+\frac{d}{dt}(\varphi_t^*\omega_t)|_{t=t_0}=\varphi_{t_0}^*\frac{d\omega_t}{dt}|_{t=t_0}+\varphi_{t_0}^*\mathcal{L}_{V_{t_0}}\omega_{t_0}.
+\end{equation*}
+Note that $\frac{d\omega_t}{dt}=d\frac{d\beta_t}{dt}$, letting $\gamma_t\coloneqq\frac{d\beta_t}{dt}$ and using Cartan's Magic formula:
+\begin{equation*}
+\frac{d}{dt}(\varphi_t^*\omega_t)|_{t=t_0}=\varphi_t^*(d\gamma_t+(\iota_{V_t}d\omega_t+d\iota_{V_t}\omega_t))
+\end{equation*}
+Recall that our goal was to make this vanish. Now we are going to try to put some conditions on $\omega_t$ to achieve this. If we assume $\omega_t$ to be closed, then $\iota_{V_t}d\omega_t=0$. Thus, $\frac{d}{dt}(\varphi_t^*\omega_t)|_{t=t_0}=\varphi_t^*(d(\gamma_t+\iota_{V_t}\omega_t))$. To make this expression vanish, we may further assume $\gamma_t+\iota_{V_t}\omega_t=0$. So, now we try to solve $$-\gamma_t=\iota_{V_t}\omega_t.$$ In other words, we are looking for a $V_t$ satisfying this condition. In fact, we are looking for such conditions that this equation uniquely defines a $V_t$.
+
+Let $\alpha\in \text{Alt}^k(V)$ (considering the differential form at a point), where $V$ is an $n$-dimensional real vector space. Here $\text{Alt}^k(V)$ denotes the space of alternating, $k$-linear maps on $V$. Recall that $\text{Alt}^k(V)\simeq \Lambda^k V^\vee$. We have the following map 
+$$V\to \text{Alt}^{k-1}(V)$$ by $v\mapsto \iota_v\alpha$. Being able to find a $V_t$ means that this map is surjective, and uniqueness means that this map is injective. So, we are looking for conditions on $\alpha$ such that this map is an isomorphism. This implies that they have the same dimension, which happens for $k=2, n$ because the dimension of $\Lambda^{k-1} V^\vee$ is equal to $\binom{n}{k-1}$. This is not sufficient. 
+
+Let's first look at the case for $k=2$. Let $\alpha\in \Lambda^2 V^\vee$. In this case, the map takes the form $V\to V^\vee$ given by $v\mapsto \iota_v\alpha$. If this is an isomorphism $\alpha$ is called non-degenerate. Thus, the first option is that $\omega_t$ is a non-degenerate, closed $2$-form, in other words a symplectic form. 
+
+Now, let's begin the discussion of $\alpha \in \Lambda^nV^\vee \simeq \R$. Again, we look at the same map $V\to \Lambda^{n-1}V^\vee$ given by $v\mapsto \iota_v\alpha$. If $\alpha=0$, then the condition is not satisfied. On the other hand, if $\alpha\neq 0$, then given $v\neq 0$, we can extend $\{v\}$ to a basis $\{v,e_1,\cdots,e_{n-1}\}$ and $\iota_v\alpha(e_1,\cdots,e_{n-1})\neq0\implies \iota_v\alpha\neq 0$, meaning that we have an isomophism as desired. Thus, the second option is that the $n$-form $\omega_t$ is nowhere vanishing, i.e. $\omega_t$ is a volume form.
+
+\begin{proof}[Proof of Moser's theorem on volume forms] To prove the theorem about volume forms, it only remains to show that $\mu_t\coloneqq \mu_0+td\beta$ is a volume form for $t\in [0,1]$. Note that this is just $\mu_0+t(\mu_1-\mu_0)=(1-t)\mu_0+t\mu_1$. Because they induce the same orientation on tangent spaces, $\mu_0$ and $\mu_1$ at any point are either both positive and negative on a given basis, $\mu_t$ is never zero and hence a volume form as required.
+\end{proof}
+How about for symplectic forms? In particular, is the following statement correct?
+\begin{non-theorem}
+Let $\sigma_0,\sigma_1$ be two symplectic forms such that $\left[\sigma_0\right]=\left[\sigma_1\right] \in H^2_{dR}(X)$, then there exists a diffeomorphism $\varphi:X\to X$ such that $\varphi^*\sigma_1=\sigma_0$. 
+\end{non-theorem}
+Everything in the previous argument works except the fact that $\sigma_t=(1-t)\sigma_0+t\sigma_1$ might not be non-degenerate (and therefore not symplectic). There are many subtle questions here that you can read about.
+
+Let us discuss the following theorem that is known as the Darboux Theorem. 
+\begin{theorem}
+Let $(M,\omega)$ be a symplectic manifold, and $x\in M$. There exists a coordinate chart $U$ near $x$ with coordinates $p_1,\cdots,p_n,q_1,\cdots,q_n$ such that $\omega|_U=\sum dp_i\wedge dq_i$.
+\end{theorem}
+\begin{proof}
+This is a local claim, so we may assume $M=\R^N$, and $x$ to be the origin. First, let's discuss why $M$ is even-dimensional. Let's look at a single tangent space $T_0\R^N\simeq \R^N$ and $\omega_0$, which is an anti-symmetric bilinear form. The linear algebra version of the theorem says that there is a basis $e_1,\cdots,e_n,f_1,\cdots,f_n$ such that $\omega_0(e_i,e_j)=\omega_0(f_i,f_j)=0$, and $\omega_0(e_i,f_j)=\delta_{ij}$. We omit the proof of this statement - it is a good exercise (more details after the proof).
+
+Take $p_1,\cdots,p_n,q_1,\cdots,q_n$ to be linear coordinates with $\frac{\partial}{\partial p_i}=e_i$ and $\frac{\partial}{\partial q_i}=f_i$ at the origin. Set $\omega_\text{st}=\sum dp_i\wedge dq_i$. Note that $(\omega_\text{st})_0=\omega_0$. Notice that $$\omega_t:=t\omega+(1-t)\omega_\text{st}$$ is symplectic at the origin for every $t$. But this means that in a small neighborhood of the origin it is symplectic. Since $\left[0,1\right]$ is compact, there exists an open neighborhood of the origin where $t\omega+(1-t)\omega_\text{st}$ is symplectic. 
+
+Now, let's try to apply the Moser's argument to the family $\omega_t$ in this neighborhood. In the Moser argument we take $\beta_t=t\beta$ and $\gamma_t=\beta$, where $\beta$ is such that $\omega-\omega_\text{st}=d\beta$. It will yield a vector field but since the manifold is open, we might not have completeness. If we force $\beta=0$ at the origin, the vector field will also be zero at the origin. Then, during the Moser isotopy the origin will be stationary and by using the existence, uniqueness and smooth dependence on initial data results we will find a neighborhood of the origin (even smaller than the symplecticity neighborhood) whose flow is defined for $t\in [0,1]$. This creates the desired coordinate system! 
+
+How can we make sure that we can choose such a $\beta$? Pick a random $\beta$. Suppose $\beta|_0=\sum c_idp_i|_0+d_idq_i|_0$. Set $\gamma=\sum c_idp_i+d_idq_i$; $\gamma$ is closed. Then $\tilde{\beta}=\beta-\gamma$ is a desired $1$-form. 
+\end{proof}
+\begin{question}
+Prove the linear algebra version of the Darboux Theorem. You may first start with a single vector $e_1$ and try to extend it to $n$ vectors with the desired property. Then by using nondegeneracy you can obtain $f_i$'s as well.
+\end{question}
+
+\section{Lecture 3: Volume Preserving Vector Fields, The De Rham Complex, Compact Supports}
+
+\subsection{Volume Preserving Vector Fields}
+
+Let $M$ be an n-manifold, $\mu \in \Omega^n(M)$ and $V\in \Gamma(TM)$. Requiring $\mu$ to stay invariant by the flow generated by the vector field $V$ means $\varphi_t^*\mu = \mu$ for all t. This condition is equivalent to $$\mathcal{L}_V\mu = 0 \iff \iota_Vd\mu + d(\iota_V\mu)=0.$$
+
+But as $\mu$ is an $n$ form, the first term is zero and we get $$d(\iota_V\mu)=0.$$
+
+Now let's assume that $\mu$ is also a volume form. Using this fact, we get the following isomorphism
+
+\begin{align*}
+        T_xM &\xrightarrow{\sim} \Lambda^{n-1}T_xM \\ v &\mapsto \iota_V\mu.     
+\end{align*}
+
+The above isomorphism and condition imply that the volume-preserving vector fields correspond to closed $n-1$ forms.
+
+We can also interpret this geometrically. Given a nice bounded region $U$ in an oriented manifold $M$, we can integrate the form $\mu$ on $U$ to get a real number. If a vector field preserves the volume form $\mu$, using the flow, we get
+
+\begin{equation*}
+    \int_U \mu = \int_U \varphi_t^*\mu= \int_{\varphi_t(U)} \mu .
+\end{equation*}
+
+Now let $\mu= dx_1\wedge\dots\wedge dx_n$ on $\mathbb{R}^n$. We can write the vector field on coordinates as $V=\sum\psi_i \frac{\partial}{\partial x_i}$. The condition $d(\iota_V\mu)=0$ gives
+
+\begin{equation*}
+    \sum_{i=1}^n \frac{\partial \psi_i}{\partial x_i}dx_1\wedge\dots\wedge dx_n=0.
+\end{equation*}
+
+Therefore, volume preserving vector fields on coordinates are precisely the divergence free ones.
+
+\begin{question}
+    Can you characterize the vector fields that preserve a symplectic form $\omega$?
+\end{question}
+
+\subsection{Start following Bott-Tu}
+
+We did a recap of the class last year to allow better comparison with  Bott-Tu. Even if most of what follows is a repetition we go through it since it's good to see different presentations of the same material.
+
+\subsection{The De Rham Complex}
+
+We first define the de Rham complex on $\R^n$. Let $x_1,\dots,x_n$ be the linear coordinates. We define $\Omega^*$ to be the algebra over $\R$ generated by $dx_1,\dots,dx_n$ with the relations
+\begin{align*}
+    &(dx_i)^2=0\\
+    &dx_idx_j=-dx_jdx_i, i\neq j.
+\end{align*}
+
+The $C^\infty$ differentials on $\R^n$ are elements of 
+
+\begin{equation*}
+    \Omega^*(\R^n)=\{C^\infty\; \text{functions on }\;\R^n\}\otimes_\R \Omega^*.
+\end{equation*}
+
+So an element $\omega \in \Omega^*(\R^n)$ is of the form $\sum f_Idx_I$ where $I$ is a multi-index. This algebra is naturally graded, and we can consider $C^\infty$ q-forms on $\R^n$. There is a differential operator $$d:\Omega^q(\R^n)\xrightarrow{} \Omega^{q+1}(\R^n)$$
+
+defined as:
+
+\begin{itemize}
+    \item if $f\in \Omega^0(\R^n)$, then $df=\sum\frac{\partial f}{\partial x_i}dx_i$
+    \item if $\omega=\sum f_Idx_I$, then $d\omega=\sum df_Idx_I$.
+\end{itemize}
+
+It can be checked that the operator satifies $d(\tau\wedge \omega) = d\tau\wedge\omega+(-1)^{deg\tau}\tau\wedge d\omega$ and $d^2=0$. The complex $\Omega^*(\R^n)$ with the differential operator $d$ is called the de Rham complex on $\R^n$. The kernel of $d$ is called the closed forms, and the image is called the exact forms.
+
+\begin{definition}
+    The $q$-th de Rham cohomology of $\R^n$ is the vector space 
+    \begin{equation*}
+        H^q_{dR}(\R^n) = \{\text{Closed }q\text{ forms}\}/\{\text{Exact } q\text{ forms}\}.
+    \end{equation*}
+\end{definition}
+
+\begin{remark}
+    We can replace $\R^n$ with an open set $U$ of $\R^n$ in all of these definitions. 
+\end{remark}
+
+\begin{example}
+    \begin{enumerate}
+        \item For $n=0$ we get 
+        \begin{equation*}
+            H^k(p) = \begin{cases} 
+      \mathbb{R} & k=0 \\
+    0 & \text{otherwise}
+   \end{cases}
+        \end{equation*}
+        \item In general,
+        \begin{equation*}
+            H^k(\R^n) = 
+            \begin{cases} 
+            \mathbb{R} & k=0 \\
+            0 & \text{otherwise}
+            \end{cases}
+        \end{equation*}
+        which is called the Poincare lemma.
+    \end{enumerate}
+\end{example}
+
+\subsection{Compact Supports}
+
+Recall that the support of a continuous function is $\text{Supp}f=\overline{\{p\in M | f(p)\neq0\}}.$ If we restrict ourselves to smooth functions with compact support, we get the compactly supported de Rham complex $\Omega_c^*(\mathbb{R}^n)$ defined as
+
+\begin{equation*}
+    \Omega_c^*(\mathbb{R}^n)= \{C^\infty \text{functions on\;} \mathbb{R}^n\; \text{with compact support}\}\otimes_\mathbb{R} \Omega^*
+\end{equation*}
+
+The cohomology of this complex is denoted as $H_c^*(\mathbb{R}^n)$. 
+
+We can replace $\R^n$ with an open set $U$ of $\R^n$ in these definitions too. 
+
+\begin{example}
+\hfill
+    \begin{enumerate}
+        \item Let's first compute the compactly supported de Rham cohomology of a point $p$. Only $0$-forms exist so $H_c^n(p)=0$ for $n>0$. Closed forms are the constant functions and they are compactly supported on $p$. Therefore $H_c^0(p)=\mathbb{R}$, to summarize
+        \begin{equation*}
+            H_c^k(p) = \begin{cases} 
+      \mathbb{R} & k=0 \\
+    0 & \text{otherwise}
+   \end{cases}
+        \end{equation*}
+        \item For the compactly suppoored deRham cohomology of $\mathbb{R}$, the closed $0$-forms are again constant functions, but the ones that are not zero are not compactly supported on $\mathbb{R}$, hence $H^0_c(\mathbb{R})=0$. To compute the first cohomology, consider the integration map
+        \begin{equation*}
+            \int_\mathbb{R}: Z^1_c(\R)=\Omega^1_c(\R) \xrightarrow{} \R.
+        \end{equation*}
+        The map is obviously surjective because the Riemann integral of a non-negative and not identically zero compactly supported function is positive - we can then scale this function to obtain all real numbers. Furthermore, the map vanishes on exact $1$-forms (with compactly supported primitive!). To see this, consider $df$ where f has compact support, so the support of $f$ and the support of $\frac{\partial f}{\partial x}$ lies in the interior of $[a,b]$. Using the fundamental theorem of calculus and the fact that $f$ is zero on the boundaries, we get
+        \begin{equation*}
+            \int_\mathbb{R}df=\int_a^b\frac{\partial f}{\partial x} dx = f(b)-f(a)=0.
+        \end{equation*}
+        Therefore the integration map induces a surjective linear map from $H^1_c(\R)$ to $\R$. Now we claim that the kernel of the integration map is precisely the exact 1-forms. Let $g(x)dx\in \text{ker}\int_\R$ and consider 
+        \begin{equation*}
+            f(x)= \int_{-\infty}^x g(u)du.
+        \end{equation*}
+        As $g(x)$ is compactly supported and the total integral is zero, the integral is zero before certain $a'$ and after some $b'$. Hence $f(x)$ is also compactly supported. Using the fundamental theorem of calculus again, we get $df=g(x)dx$; hence $g(x)dx$ is exact. Therefore the induced integral map is an isomorphism from $H^1_c(\R)$ to $\R$.
+        \begin{equation*}
+            H_c^k(\R) = 
+            \begin{cases} 
+            \mathbb{R} & k=1 \\
+            0 & \text{otherwise}
+            \end{cases}
+        \end{equation*}
+        \item More generally,
+        \begin{equation*}
+            H_c^k(\R^n) = 
+            \begin{cases} 
+            \mathbb{R} & k=n \\
+            0 & \text{otherwise}
+            \end{cases}
+        \end{equation*}
+        which is known as the Poincare lemma for cohomology with compact support.
+        
+    \end{enumerate}
+\end{example}
+
+
+
+\section{Lecture 4,5.6: Mayer-Vietoris and Poincaré Lemma for cohomology with compact support}
+
+We continued following Bott-Tu. Here we note parts of the lectures only.
+
+\subsection{Mayer-Vietoris sequence for compactly supported cohomology}
+
+We wish $\Omega_c^{*}$ to share similar functorial properties with $\Omega^{*}$. But for a manifold $M$, pullback of a form with compact support via a smooth function is not necessarily compactly supported. For example, consider the pullback of functions on $M$ by the projection $M \times \R \to M$. 
+
+We could work with proper maps, those maps under which the preimage of a compact set is always compact. Or we could consider inclusions of open sets as morphisms in the category of smooth manifolds. If $j:U \to M$ is an inclusion, then the pushforward $j_{*}:\Omega_c^{*}(U)\to \Omega_c^{*}(M)$ is the map which extends a form on $U$ by zero to a form on $M$. Now the functor $\Omega_c^{*}$ is covariant.
+
+Suppose $M$ is covered by two opens $U$ and $V$. We have the sequence of inclusions 
+
+\begin{equation*}
+    M \leftarrow U \sqcup V \leftleftarrows U\cap V
+\end{equation*}
+which give rise to a sequence of forms with compact support 
+\begin{align*}
+    \Omega_c^{*}(M) \leftarrow  \Omega_c^{*}(U) \oplus\Omega_c^{*}(V) &\leftarrow \Omega_c^{*}(U\cap V)\\
+    (-j_*\omega,j_*\omega) &\mapsfrom \omega\\
+\end{align*}
+where the leftmost arrow is summation.
+\begin{proposition}
+The Mayer-Vietoris sequence of forms with compact support
+\begin{equation*}
+     0\leftarrow \Omega_c^{*}(M) \leftarrow  \Omega_c^{*}(U) \oplus\Omega_c^{*}(V) \leftarrow \Omega_c^{*}(U\cap V) \leftarrow0 
+\end{equation*}
+   is exact.
+\end{proposition}
+\begin{proof}
+    See Bott\&Tu pg.26
+\end{proof}
+Mayer-Vietoris sequence gives rise to a long exact sequence in compactly supported cohomology \\
+
+\begin{tikzpicture}[descr/.style={fill=white,inner sep=1.5pt}]
+        \matrix (m) [
+            matrix of math nodes,
+            row sep=1em,
+            column sep=2.5em,
+            text height=1.5ex, text depth=0.25ex
+        ]
+        { & H_c^{q+1}(M) & H_c^{q+1}(U)\oplus H_c^{q+1}(V)& H_c^{q+1}(U \cap V)  \\
+            & H_c^{q}(M) & H_c^{q}(U) \oplus H_c^{q}(V)& H_c^{q}(U \cap V) \\
+            &\dots \\
+        };
+
+        \path[overlay,<-, font=\scriptsize,>=latex]
+        
+        (m-1-2) edge (m-1-3)
+        (m-1-3) edge (m-1-4)
+        (m-1-4) edge[out=355,in=175,red] node[descr,yshift=0.3ex] {$d^*$} (m-2-2)
+        (m-2-2) edge (m-2-3)
+        (m-2-3) edge (m-2-4)
+        (m-2-4) edge[out=355,in=175,red] node[descr,yshift=0.3ex] {$d^*$} (m-3-2);
+         
+\end{tikzpicture}
+
+\subsection{Poincaré Lemma for compactly supported cohomology}
+Let us first give a direct proof that
+
+\begin{equation*}
+            H_{c}^k(\mathbb{R}^n)=
+            \begin{cases} 
+            \mathbb{R} & k=n \\
+            0 & \text{otherwise}
+            \end{cases}
+        \end{equation*}  
+%We will prove the Poincaré lemma for cohomology wih compact support using the Mayer-Vietoris sequence for $S^n$. One obvious way to decompose $S^n$ is to consider $S^n = U_1 \cup U_2$ where $U_1$ and $U_2$ are the complements of the south and the north poles respectively. So $U_1$ and  $U_2$ are diffeomorphic to $R^n$ and the intersection $U_1 \cap U_2$ is diffeomorphic to $\R \times S^{n-1}$ which is in turn homotopy equivalent to $S^{n-1}$. But homotopy equivalence is not enough for isomorphisms of deRham cohomologies with compact support. 
+%
+%\begin{lemma}
+%    The map $H^k_c(U_1 \cap U_2) \to H^k_c(U_1)\oplus H^k_c(U_2) $ from the Mayer-Vietoris sequence of $S^n$ is surjective if and only if $H^k_c(\R^n) =0$
+%\end{lemma}
+%\begin{proof}
+%If direction is trivial, so let us assume the surjectivity and also that there is a non-zero element $\eta\in H^k_c(U_1)$. There is a $\beta\in H^k_c(U_1 \cap U_2)$ such that $\iota_*\beta=\eta$ by surjectivity. The main claim is that $\iota_*\beta\in H^k_c(U_2)$ is not zero. This gives the desired contradiction, as then $(\eta,0)$ cannot be in the image.
+%
+%Let us consider the antipodal map $A:S^n\to S^n$. Now we note that the inclusion $U_1\cap U_2\to U_2$ is nothing but $$A|_{U_1}\circ\iota_{U_1\cap U_2\to U_1}\circ A|_{U_1\cap U_2}.$$ Since the first and the last maps both induce isomorphisms on THIS DOES NOT ACTUALLY WORK!
+%\end{proof}
+We already proved this for $n=0,1$, so let us assume $n\geq 2.$ Since $S^n$ is compact,
+\begin{equation*}
+            H_{dR}^k(S^n)=H_c^k(S^n) = 
+            \begin{cases} 
+            \mathbb{R} & k=0,n \\
+            0 & \text{otherwise}
+            \end{cases}
+        \end{equation*}  
+        
+        Recall that $\R^n$ is diffeomorphic to $n$-sphere with north pole removed $S^n-\{N\}$ via stereographic projection. Given $\omega \in \Omega_c^{*}(\R^n)$ we can extend it by zero to $\iota_* \omega \in \Omega^*(S^n)$ so that it is zero in a neighborhood around $N$. 
+
+    We first deal with the case  $1<k<n$. Let $\omega \in \Omega_c^k(\R^n)$ be a closed form. Since  $k$-th cohomology of $n$-sphere are zero, $\iota_*\omega$ is exact. So $\iota_* \omega = d\beta$ for some $\beta \in \Omega^{k-1}(S^n)$. 
+
+    If $\beta$ is zero near $N$, we are done. We aim to modify $\beta$ such that it is zero in a neighborhood of $N$. Let $U$ be a smoothly contractible neighborhood of $N$. Now we can use the homotopy invariance for deRham cohomology on $U$ and say 
+    $\iota^*_U \beta = d \eta$ for some $\eta$ since $d\iota_U^* \beta = 0$. 
+
+    Now we choose a function $\rho$ that is compactly supported inside $U$ and equal to $1$ near $N$. If we replace $\beta$ with $\beta - d(\rho \eta)$. Now near $N$, we have $\beta - d(\rho \eta) = \beta - d\eta = 0$ and $d\beta$ is same as before. 
+    
+    \begin{exercise}
+Finish the proof by analyzing the $k=1$ and $k=n$ cases.
+\end{exercise}
+        
+%Using Mayer-Vietoris, we get the following sequence
+%\begin{center}
+%    \begin{tabular}{cccc}
+% & $S^n$ & $U_1\sqcup U_2$ & $\R \times S ^{n-1}$ \\
+%$H_c^n$ &$\R$  &  &  \\
+%$H_c^{n-1}$ & 0 &  &  \\
+%\vdots & \vdots  &  & \\
+%$H_c^2$ &0  &  &  \\
+%$H_c^1$ & 0 &  &  \\
+%$H_c^0$ & $\R$ &0  &  \\
+%
+%\end{tabular}
+%\end{center}
+%
+Let us also give a seperate argument for $k=n$ as a warm-up to Bott\&Tu pg.37. Let $\alpha=f(x_0,x_1,\dots,x_n)dx_0\dots dx_n$ be a compactly supported $n+1$-form. We claim that 
+\begin{equation*}
+    \int_{\R^{n+1}}\alpha = 0 \Leftrightarrow \exists \beta \in \Omega_c^n(\R^n), d\beta = \alpha.
+\end{equation*}
+Assuming this for the moment, the integral map
+\begin{align*}
+    H_c^{n+1}(\R^{n+1}) &\to \R\\
+        [\alpha] &\mapsto \int_{\R^{n+1}}\alpha
+\end{align*} well defined by ($\Leftarrow$). It is an isomorphism too: ($\Rightarrow$) implies injectivity since only exact forms have a total integral of zero and surjectivity is given by finding a form whose integral is positive and then scaling it to get any real number. 
+
+Now let us go back to the proof. ($\Leftarrow$) is Stokes theorem. Let us prove ($\Rightarrow$). We set $\vec{x}=(x_1,\dots,x_n)$. From Poincaré lemma for deRham cohomology we know that there exist $\beta \in \Omega^n(\R^{n+1})$ such that $d\beta = \alpha$. 
+\begin{equation*}
+    \beta = \left(\int_0^{x_0}f(y,\vec{x})dy\right)dx_1\dots dx_n
+\end{equation*}
+But this $\beta$ is not necessarily compactly supported.
+Now let 
+
+\begin{equation*}
+    \beta = \left(\int_{-\infty}^{x_0}f(y,\vec{x})dy\right)dx_1\dots dx_n
+\end{equation*}
+$\beta$ is compactly supported if $\int_{-\infty}^{\infty}f(y,\vec{x})dy = 0$. If that is the case, we are done. Our goal is now to reduce to this simple case from a general $\alpha$.
+
+Define the $n+1$-form 
+\begin{equation*}
+    \Tilde{\alpha}= \rho(x_0)\left(\int_{-\infty}^{\infty}f(x_0,\vec{x})dx_0\right)dx_0\dots dx_n = \rho(x_0)g(\Vec{x})dx_0\dots dx_n
+\end{equation*}
+where $\rho$ is a compactly supported with total integral of $1$. For $\alpha - \Tilde{\alpha}$,
+
+\begin{equation*}
+    \int_{-\infty}^{\infty}\left(f(y,\Vec{x})-\rho(y) \left(\int_{-\infty}^{\infty}f(\Tilde{y},\Vec{x})d\Tilde{y}\right)\right)dy = \int_{-\infty}^{\infty}(f(y,\Vec{x})dy- \int_{-\infty}^{\infty}f(\Tilde{y},\Vec{x})d\Tilde{y}=0
+\end{equation*}
+thus we can use the simple case and  $\alpha-\Tilde{\alpha} = d\Tilde{\beta}$ for some $\Tilde{\beta} \in \Omega_c^{n}(\R^{n+1})$.
+
+ Now it remains to show that $\Tilde{\alpha} = d\gamma$ for some $\gamma \in \Omega_c^n(\R^{n+1})$ so that $\alpha$ itself is exact. The $n$-form $g(\Vec{x})dx_1\dots dx_n \in \Omega_c^n(\R^n)$ is compactly supported because the image of the projection of a compact set in $\mathbb{R}^{n+1}$ to the last $n$ coordinates is compact; and has integral zero since 
+ \begin{equation*}
+     0=\int \alpha =\int g(\Vec{x})dx_1\dots dx_n.
+ \end{equation*}
+ By our induction hypothesis, $g(\Vec{x})dx_1\dots dx_n$ is exact. Say for some $\tau \in \Omega_c^{n-1}(\R^n)$, $\omega = d\tau$. Then, let $\tau'$ be $\tau$ seen as a form on $\R^{n+1}$ (by pullback), we have
+ \begin{equation*}
+     d(-\rho dx_0 \wedge \tau') = d(-\rho dx_0) \wedge \tau' - (-\rho dx_0 \wedge d\tau') = 0+ \rho(x_0)g(\Vec{x})dx_1\dots dx_n = \Tilde{\alpha},
+ \end{equation*} finishing the proof.
+ 
+ \section{Lectures 7,8: Poincaré Duality in deRham theory}
+ 
+
+\subsection{A Short Recap on Riemannian Geometry}
+
+\indent \indent In a Riemannian manifold geodesics locally minimize length. It is important to derive the differential equation that they satisfy in order to be able to use analytic techniques in their analysis. This is a $2^{nd}$ degree equation, but it can be reduced to $1^{st}$ degree equation(s) inside the tangent bundle. We can then use the standard theorems for ODE's as we discussed in the first lectures. \\
+\indent \indent A set in a Riemannian manifold being geodesically convex means that for any pair of points in the set there is one and only one geodesic contained in the set between these points. 
+\subsection{Back to the Book:} \indent The claim in Bott $\&$ Tu: Geodesically convex sets are diffeomorphic to $\mathbb{R}^n$. \\
+\indent In the flat/euclidean metric on $\mathbb{R}^n$, being a convex set and being a geodesically convex set in the flat Riemannian metric are equivalent. Bott \& Tu want to show this fact in general for Riemannian manifolds instead the Euclidean metric but we will prove it for this special metric of $\mathbb{R}^n$ since even this induced statement is hard enough. \\
+\indent \indent All our work here is to prove the existence of finite good covers of arbitrary manifolds. Thus the following statement is needed:
+\subsection{\textbf{Claim: Star-shaped open set in $\mathbb{R}^n$ is diffeomorphic to $\mathbb{R}^n$:}} 
+\indent \indent A set $S$ is said to be star shaped in $\mathbb{R}^n$ if it has a point $O\in S$ where along every direction (unit vector) $\overrightarrow{OX}$ the points $O + t \cdot\overrightarrow{OX}$ is always contained in the set until a point $O + t_f\cdot \overrightarrow{OX} = \overrightarrow{Ox_f}$, and for any $t$ bigger than $t_f$ they never intersect the set. Here the boundary point $\overrightarrow{Ox_f}$ may or may not be in $S$. In other words, if $O + t \overrightarrow{OX}$ is contained in $S$ then every $O + t' \overrightarrow{OX}$ will be contained in $S$ for all $0 < t' < t_f$. Here convex sets are special star shaped domains where the point $O$ can be taken any point of the set. For simplicity (since the proof will not require for all points to be taken as $O$) we will consider the star shaped sets such that there is at least such a point $O$ inside the set to prove the case that $S$ has smooth boundary.
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.5\textwidth]{star.png}
+    \caption{Star-shaped sets. End points $x_f$ (${\Tilde{x}}$  in the figure) may or not be included.}
+    \label{fig:star-shaped}
+\end{figure} 
+$\newline \newline$
+
+\subsection{S with smooth boundary in $\mathbb{R}$:}
+ \indent To picture the original problem consider the interior of a star shaped set which is basically just an open interval, e.g. consider $(-1, 1)$ and choose $O = 0$. We need a diffeomorphism that will make the segments (there are only two segments here from 0 to the boundaries $x_f = 1$ and $x_f= -1$) and for continuity to be satisfied, the function shall diverge to infinity when the variable gets closer and closer to boundary points. Thus we can choose $f(x) = \frac{x}{1 - x^2}$ which satisfies the properties we need and differentiable everywhere on the interval $(-1,1)$ and its inverse exists since it is a bijection on this domain and it is again differentiable, hence, it is a diffeomorphism. 
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.25\textwidth]{star2.png}
+    \caption{A picture for the diffeomorphism between (0,1) and (0, $\infty$) that is diffeomorphic to $\mathbb{R}$: \\ The set (0,1) is considered as the projection before scratched to $\mathbb{R}^{+}$ which spoils what is ahead in the proof of the existence of the good covers.}
+    \label{fig:star2}
+\end{figure}
+
+
+\subsection{$S$ with smooth boundary in $\mathbb{R}^n$}
+
+\indent\indent If we assume the boundary is smooth, then our proof uses the function $\phi : X \mapsto f(\frac{|OX|}{|Ox_f|}) \cdot Ox_f$ where $x_f$ is along $X$, in addition, $f$ is modified as $f(x) = \frac{x}{1 - |x|^2} = \frac{x}{1 - x\cdot x}$ and $\phi$ is defined to be identity function near 0 (to make its derivative non-zero at $O$ and satisfy the conditions for Inverse Function Theorem). \\
+\indent The resulting function can be modified to be smooth and invertible by taking the set $U$ appropriately for $\phi_{|U} = $ Id$_{|U}$. On each segment from $O$ to the boundary point $x_f$ it maps all the points on the segment to the half-line with scalars $[0, \infty)$ along the direction $Ox_f$ in $\mathbb{R}^n$ and it does that with a scaling factor $f$ in a smoothly changing way since the boundary and the function $f$ are smooth. Finally, the Inverse Function Theorem implies that $\phi$ has inverse everywhere since the derivative is non-zero including at $X = O$, hence, $\phi$ is a diffeomorphism between $S$ and $\mathbb{R}^n.$ \\
+
+
+
+\subsection{Problems with Non-Smooth Boundary}
+
+\indent \indent The Bott $\&$ Tu argument likes to use the intersection of two geodesically convex sets however such an intersection does not have to have a smooth boundary even if two sets have smooth boundaries. So the case of smooth boundary is not sufficient for it. The link to the proof of the case where the boundary is not assumed to be smooth is given in the discord channel. \\
+\indent The new argument uses a similar idea with modifications, like, it uses a new $f$ that is smooth and zero outside the given geodesically convex set and instead $f$ itself, it uses $1/f$ and the new scaling factor function lambda that is a quite complicated function. Furthermore, Bott \& Tu presumes that geodesically convex sets actually exist which should be another lemma. \\
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.25\textwidth]{circles.png}
+    \caption{Intersection of two regions with smooth boundaries: not necessarily smooth.}
+    \label{fig:circles_inter}
+\end{figure}
+
+\subsection{Final Preparation for the Proof:}
+
+\indent To construct a good cover we can consider the embedding of M $\hookrightarrow$ $\mathbb{R}^{N}$ as a closed submanifold by Whitney Embedding Theorem. We define a standard chart of Radius $r > 0$ at $x$ in $M$. For any arbitrary $x$ on $M$ in the ambient space, we have the tangent plane $T_x M \in T_x \mathbb{R}^N$ (which is an affine one since we are in $\mathbb{R}^N $). Now for any neighborhood of $x\in M$ we can project this neighborhood into $T_x M$ and we can actually choose it small enough to ensure that the projection will be diffeomorphic to the neighborhood. Is this method valid at all? Yes! This is actually the statement of Implicit Function Theorem which explains when we can use the linear coordinates as valid coordinates (bijectively, smoothly and inverse smoothly, i.e. diffeomorphically).
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.75\textwidth]{tangent and projection.png}
+    \caption{The picture in $\mathbb{R}^N$}
+    \label{fig:circles_interr}
+\end{figure} 
+
+\indent Now we can also do the following to make things similar: Since the projection on the tangent space is open (the projection is smooth as we mentioned) there are open balls with any radius $0 < r < \epsilon$. Now since this projection $\pi$ is a diffeomorphism and into an affine subspace, it can be considered as a chart with its inverse $\pi^{-1}$ by restricting its domain to the balls with radius $r$ since this balls are homeomorphic to $\mathbb{R}^k $ for some $k$. 
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.75\textwidth]{tangent and projection 2.png}
+    \caption{The picture in $\mathbb{R}^N$ and arbitrary neighborhood of $y\in U_x$ as the blue region.}
+    \label{fig:circles_interrrr}
+\end{figure}
+
+\indent In addition, we can obtain a chart in the neighborhood $U_x$ and for any other point $y \in U_x$ by restricting our sets to preimages of discs with radius even more smaller: We can apply the same procedure using $T_y M$ and in the end we can come back and consider the intersection $y\in U_y$ by $ U_y = U \in U_x $ where U is an arbitrary neighborhood of y. This method is valid because points converge to $x$ as we use smaller and smaller values for $r$ and, furthermore, the sets $U_y$ will be converging to a set inside $U_x$. Now this $U_y$ is also a chart by its own right and it can be shown that the projections are actually convex when even smaller $r$ values are chosen. \\
+\indent For convexity, note that the transition maps can be made coordinate-wise $C^2 $ - close to identity mappings by making $r$ smaller. Now: $\mathbb{R} ^ h \longrightarrow \mathbb{R}$ by $\Vec{x} \rightarrow x_1 ^2 + ... + x_h ^2 $ is convex with some room to perturbation. Namely if we have $f \circ \phi: U \rightarrow V \rightarrow \mathbb{R}$ where is a chart that is sufficiently $C^2$ - close to identity function, i. e. differ from the identity function and $f\circ \phi$ is convex! Here convex means its Hessian is a positive definite matrix. The explicit formula if one needs it is given by Faá di Bruno's Formula. Thus, sub-level sets are convex by definition. 
+
+\subsection{Proof of the Existence of Good Covers:} 
+
+\indent Now at every $x\in M$, consider a sufficiently small (any radius small enough works!) standard chart $(U_x ,\phi_{x})$, and put them all together as $\{U_x\}_{x\in M}.$
+
+\subsection*{Claim: This is a good cover.} \indent Project from a point in any intersection. We observe that a finite intersection of convex sets are also open subset that were shown diffeomorphic to $\mathbb{R}^h$, since finite intersection of convex sets is again convex, and hence diffeomorphic to $\mathbb{R} ^h$.
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.25\textwidth]{matta.png}
+    \caption{Showing the finite intersections of neighborhoods obtained from choosing sufficiently small radius values at every point are actually diffeomorphic to $\mathbb{R}^{k}$.}
+    \label{fig:circles_intertg}
+\end{figure} 
+
+\indent Firstly, observe that we used the concept of "diffeomorpism to $\mathbb{R}^h$" instead contractibility because we will use good covers for compact De Rham cohomology either. Now this proof is less complicated than showing every manifold has a triangulation and implying the existence of good covers by this fact. \\
+\indent The corollary 5.8 in Bott \& Tu represents the fact that covers can be modified in a way that we can form new sets such that the new open sets will be contained in one of the previous coring sets that satisfies the good cover property. The theorem there is expressed in the terms of category theory which glimpses the category theory versions of the Cech cohomology. \\
+
+\subsection{Finite Dimensonality of De Rham Cohomology} \indent By finite dimensionality of the De Rham cohomology of some manifold we mean that the cohomology groups of every degree are finite dimensional vector spaces. Also, we have the long exact sequence called Mayer Vietoris and rank-nullity theorem from linear algebra.
+
+\subsection*{Basis Step:} \indent We use the induction considering the base step as the coverings made with only 1 set that is diffeomorphic to $\mathbb{R}^n$ and the cohomology of such spaces are all expressed by Poincare's Lemma which are either 0 or 1. So the base step is checked.
+
+\subsection*{Induction Step:} \indent The induction step assumes that all good covers with $n$ many open sets has finite dimensional De Rham cohomology and, after that, it is to imply that any  finite good covers with $n+1$ many open sets union up to a manifolds whose De Rham cohomology is again finite dimensional.
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.75 \textwidth]{Screenshot_13.png}
+    \caption{The Mayer-Vietoris sequence and the classical form of the statement with $U$ and $V$.}
+    \label{fig:circles_intertg}
+\end{figure} 
+\indent \indent Now consider $M = U_0\cup ... \cup U_p $ as a good cover. Induction hypothesis will assume that for every good cover of \textbf{any} manifold with $p-1$ open sets will result the De Rham cohomology to be finite dimensional. So take one of the $p+1$ many sets forming $M$ away and consider the union of the first $p$ many $U_i$'s as $U = U_0 \cup ... \cup U_{p-1}$ and the last set $U_{p}$ as $V$ in the above long sequence. The unions and intersections may form different manifolds but what matters is not the union of the sets, it is the number of the sets that matters since that is the variable of induction.
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.75 \textwidth]{neww.png}
+    \caption{We shall pay attention to the number of the sets in each step since that is what matters.}
+    \label{fig:newwwww}
+\end{figure} 
+
+\indent Now intersections with any number of sets in the cover ($p+1$ many different sets can be intersected at most) are given to be diffeomorphic to $\mathbb{R}^n$ by good cover property. Since the first $p$ many of them forms the manifold $U$ and they form a good cover with $p$ many sets, the De Rham cohomology of $U$ is finite dimensional by assumption. We know that the open set $V = U_p$ is diffeomorphic to $\mathbb{R}^n$ since it is a part of the given good cover, so we can consider it as a manifold by its own right and its cohomology is finite dimensional by the base step. \\
+
+\indent Having applied the Mayer-Vietoris argument using $U$ and $V$, we shall show that the condition above (*) which is implying $U\cap V = (U_0 \cup ... \cup U_{p-1}) \cap U_p $ is finite dimensional. We have the identity $ U\cap V = (U_0 \cup ... \cup U_{p-1}) \cap U_p = (U_0 \cap U_p) \cup ... \cup (U_{p-1} \cap U_p)$ which shows that the $p$ many open sets $(U_i \cap U_p)$ form a finite cover. It is also a good cover since the intersection of $k$ many $(U_i\cap U_p)$ is equal to intersection of $k+1 \leq p+1$ many of the $U_i$'s that come from the original good cover, thus, they are isomorphic to $\mathbb{R}^n$ which shows that $(U_i \cap V)$'s form a good cover for $U\cap V$. This good cover has $p$ many sets which implies, by hypothesis, that De Rham cohomology of $U\cap V$ is finite dimensional either. \\
+\indent Therefore, the argument in the figure 7 is implied to show that $U\cup V$ has finite dimensional De Rham cohomology where $U\cup V = U_0 \cup ... \cup U_p = M.$ \\
+
+\subsection{Notes on the theorem}
+\indent \indent The same argument above goes for compactly supported De Rham theory since the only thing changing in the proof is the order of cohomology groups of the spaces in the basis step which does not change the fact that they are finite dimensional, dimension of 0 and 1. Therefore, proposition in 5.3.2 in Bott \& Tu is implied either. \\
+\indent We do not know that the compact De Rham cohomology of contractible spaces, and we are interested in mostly on compact De Rham theory in this course. One can be more relax with the usual De Rham theory since we know that it is a topology invariant but Bott \& Tu uses the Cech cohomology as the main topology invariant as we will do. \\
+\indent In the usual De Rham theory, we could use the notion of contractible sets instead of "diffeomorphic to $\mathbb{R}^n"$ also, but we do not have the enough justification here yet since we will follow different cohomologies and we are yet to give the definition of Cech cohomology. This is also the reason why we did not make any comparison to, like, singular cohomology: Main cohomology theory in the book is the Cech cohomology (of the constant sheaf). So everything we have done is directly related to De Rham theory, and we make observations on how far De Rham theory can go further.\\
+
+\subsection{Poincare Pairing} \indent Poincare duality makes a connection between the usual De Rham theory and the compact De Rham theory. This is a fundamental way to deduce the elements of one theory from the other one: Consider an oriented manifold M, take any $k$-form, multiply it by some compactly supported $(n-k)$-form, so we end up with only one function in front of the standard basis element for the full-forms. We can integrate it for sure since the second form makes the full-form integrable and we are on some orientable manifold. 
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.75 \textwidth]{poincare.png}
+    \caption{A natural idea, but well-definedness must be verified.}
+    \label{fig:oh}
+\end{figure}
+
+ \subsection{Well-definedness of Poincare Pairing}
+ \indent \indent Now two questions arises: Firstly, why we defined such a mapping for only forms forming full-form? Secondly, is this even a valid mapping? We answer the second one and the answer to the first one will follow. \\
+ \indent Consider any forms in the cohomology classes other than the representative ones: $\omega' = \omega$ + d$\alpha$ and $\tau' = \tau + d\beta $ for some $k-1$ form $\alpha$ and $n-k-1$ compact form $\beta$, then we have the integrals as follows: \\
+ \begin{equation}
+ \begin{split}
+     \int_M (\omega ' \wedge \tau ') &= \int_M [(\omega + d\alpha)\wedge(\tau+d\beta)] \\
+     &= \int_M (\omega  \wedge \tau ) + \int_M (\omega \wedge d \beta) + \int_M (d\alpha \wedge \tau) + \int_M (d\alpha\wedge d\beta)   
+\end{split}
+\end{equation}
+\indent The product rule for the exterior derivative also shows that:
+\begin{equation}
+\begin{split}
+    d(\omega \wedge \beta) &= d\omega \wedge \beta + (-1)^k \omega \wedge d\beta = (-1)^k \omega \wedge d\beta \text{,\quad since $\omega$ is closed} \\
+    d(\alpha\wedge\tau) &= d\alpha\wedge\tau + (-1)^{k-1}\alpha\wedge d\tau = d\alpha\wedge\tau \text{,\quad since $\tau$ is closed} \\
+    d(\alpha\wedge d\beta) &= d\alpha\wedge d\beta + (-1)^{k-1}\alpha \wedge d^2 \beta = d\alpha\wedge d\beta
+\end{split}
+\end{equation}
+\indent \indent Therefore, the last three integrals in the equation (1) are integrating exact form, so we can apply Stoke's Theorem over the closed manifold $M$, and the exterior derivative $d's$ will be transformed into the domain as $\partial M = \emptyset $ which shows the three integrals are all zero, i.e. $\int_M (\omega '\wedge \tau ') = \int_M (\omega\wedge\tau)$. Hence the Poincare Pairing is well-defined on the cohomology level over closed manifolds.
+$\newline$
+\subsection{Poincare Duality}
+\indent \indent Poincare Pairing can be shown to be non-degenerate as done in pg.148, Bott \& Tu. Here non-degeneracy means that for any form fixed in the De Rham variable (respectively compact De Rham variable), if the pairing always results zero for all the forms in compact De Rham (respectively in De Rham), then the fixed form in De Rham (respectively compact De Rham) is exact in that complex. Thus, if there is any form that results non-zero integral with some other form under Poincare Pairing, then this form cannot be exact. Having the property of non-degeneracy is also equivalent for the pairing to induce an isomorphism between $H^k (M)$ and $H_c^{m-k} (M)^V$ whenever they are finite dimensional. \\
+\indent In the pairing, we will choose one variable and the second variable will give a vector space of mapping that give real numbers for any compactly supported $m-k$ form, i.e. a form in $H_c^k(M)^V$ for any form $H^k(M)$, and vice versa. Here we use the equal dimensionality of a vector space and its dual space by the assumption that the dimension is finite at the first place. \\
+\indent The method we describe actually gives injective linear transformations since the pairing is non-degenerate. Now the isomorphism comes from the non-degeneracy as follows: \\
+\indent We have the injections $H^k (M) \hookrightarrow H_c^{m-k} (M)^V$ and $H_c^{m-k}(M) \hookrightarrow H^{k}(M)^V$ by the method. Now we have the inequality/equation dim $H^k (M) \leq $ dim $H_c^{m-k} (M)^V = $ dim $H_c^{m-k} (M)$ and furthermore we have dim $H_c^{m-k} \leq $ dim $H^k(M)^V = $ dim $ H^k(M)$, therefore, $\quad$ we proved $ \\ H^k(M) \equiv H_c^{m-k}(M).$ Note that having finite good covers satisfies the condition of finite dimensionality.\\
+\indent One can also pay attention to the \textbf{Remark 6.4.2} in Bott \& Tu which states that the condition on the form to be closed is not necessary. The arguments use Leibniz rule and Stoke's without mentioning but the method is the same as the method we used above showing the well-definedness of Poincare Pairing.
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.75 \textwidth]{Screenshot_5.png}
+    \caption{Non-degeneracy of Poincare Pairing}
+    \label{fig:ohno}
+\end{figure}
+\indent \indent The last part of the \textbf{Remark 6.4.2} can be deduced by showing for some non-exact form $\omega$, i.e. $d\omega \neq 0,$ we have the expression a non-zero integral  for some compactly supported form with complementary degree: Consider $d\omega = \sum f_I dx_I$ and define $\sigma = \rho f_I dx_{I'}$ where $I' = [n] - T$ and $\rho$ is the bump function that is subordinate to some chart where $d\omega$ has non-zero coefficient values and whose domain intersects with the domain of $d\omega$ where it is non-zero. Then $d\omega\wedge\sigma = \rho f^2 dx_{\text{full}}$ which integrates to some non-zero value since $\rho f^2$ is non-negative and it has a positive value on the chosen domain which implies the integral is a positive number since $\rho$ and $f$ are continuous. Therefore, we proved what we like to show: $\omega$ is shown to be closed without the assumption.
+\subsection{Manifolds satisfying Poincare Duality in general} 
+
+\indent \indent Back to the isomorphism between $H^k (M)$ and $H_c^{m-k} (M)^V$ in the finite dimensional case, we can actually generalize this case. In finite dimension, we can even use an isomorphism between $H_c^k(M)^V$ and $H_c^k(M)$ but in infinite dimension such isomorphisms do not exist. Thus, in case the linear mapping \textbf{PD}: $H^k(M) \rightarrow H_c^{m-k}(M)^V$ as in the \textbf{Remark 6.4.3} in Bott \& Tu induced by the manifold $M$ is actually an isomorphism, we say that the \textbf{manifold $M$ satisfies Poincare Duality}, or we say that M is a \'good\' manifold. \\ 
+\indent For example, a manifold $M$ with finite good covers satisfies Poincare Duality. This fact also shows that something we could not do for a quite long time: Consider $M$ is also connected and insert $k = 0$. Since $M$ satisfies Poincare Duality, and finite dimensional, (e.g. having finite good cover as mentioned) then we directly deduce that $\mathbb{R} \equiv H^0(M) \equiv H_c ^m (M)^V \equiv H_c^m (M),$ furthermore, if $M$ is also compact the complexes and cohomology theories coincide and we have $H^m(M) \equiv H_c^m (M) \equiv \mathbb{R}.$
+
+\section{Lecture 9:Poincaré Duals of submanifolds}
+\subsection{Combinatorial Poincaré Duality}
+Given an $n$-dimensional simplicial complex $K$, one can construct its dual $K^\vee$—which is not necessarily a simplicial complex— by taking its $n$-cells and viewing them as points, then $n-1$-cells as edges connecting these points, and so on. Then one has a correspondence of $k$-dimensional faces of $K$ and $ n-k$-dimensional faces of $K^\vee$. If the resulting complex is also simplicial(which happens if and only if exactly $n+1$ facets join at each vertex), then one has a pairing of simplicial chains
+\begin{align*}
+    C_k^{\text{simp}} ( K) \times C_{n-k}^{\text{simp}} (K^\vee) \xrightarrow{ }  \R.
+\end{align*}
+One needs to show that this pairing agrees with the boundary operators and that it descends to the simplicial homology of the complexes. Since the underlying spaces $ X = |K| = |K^\vee|$ are homeomorphic, $ H^{\text{simp}} ( K) \cong H^{\text{simp}} ( K^\vee)  $. Thus we get 
+\begin{align*}
+    H_k^{\text{simp}} ( X) \times H_{n-k}^{\text{simp}} (X)\xrightarrow{} \R. 
+\end{align*}
+
+Of course in general it is not the case that the dual $ K^\vee$ is also simplicial. One could develop a homology theory for polytopal complexes just as well, but for various reasons it is more advantageous to consider more general kind of objects, called cell/CW complexes. 
+
+\subsubsection{CW complexes and homology}
+One builds a CW complex by inductively gluing $n$-cells $ B^n$ via continuous maps of their boundaries $ \partial B^n$ into the union of lower dimensional cells,, called the $n-1$-skeleton.  That is, we take a set of points $X^0$, the $0$-skeleton, then attach $1$-cells $B^1 = [0,1]$ by  gluing their boundary by a continuous map $ \partial [0,1] \xrightarrow{} X^0$. After we finish gluing all the $1$-cells, we proceed on to gluing the higher dimensional cells.
+
+The cellular chains $C_k (X)$ of degree $k$ 
+ are simply direct sums over the $k$-cells. The boundary map 
+\begin{align*}
+    \partial: C_k (X) \rightarrow C_{k-1} (X)
+ \end{align*}
+ is computed as follows. For a given $n$-cell in $ C_k ( X)$, which is specified by a map $ \alpha: \partial B^k\rightarrow X^{k-1}$, one computes the coefficient of a given cell $ \beta \in C_{k-1}(X)$ by taking the degree of the map
+ \begin{align*}
+     \alpha :\partial B^n  \rightarrow \faktor{X^{n-1}}{\text{complement of } \beta}\cdot 
+ \end{align*}
+ The degree is well defined as both sides are $n-1$ spheres and $ \beta$ orients the sphere on the right.
+ \subsection{Cup Product on Singular Cohomology}
+ The analogue of the wedge product in de Rham cohomology in singular cohomology is the cup product
+ \begin{align*}
+     H^k ( M ; \mathbb{Z}) \times H^{l} ( M ; \mathbb{Z} ) \xrightarrow[]{\smile} H^{k+l } ( M ; \mathbb{Z} ),
+ \end{align*}
+ which gives a graded commutative ring structure on   
+ $ H^\ast ( M ; \mathbb{Z})$. 
+
+ 
+ The cup product in singular cohomology is deceptively simpler to express. For two given cochains $  f \in C^k ( M; \mathbb{Z})$ and $ g \in C^l (M; \mathbb{Z}) $ one defines $ f \smile g \in C^{k+l} (X)$ so that for any $ \rho: \Delta^{k+ l} \rightarrow M$
+ \begin{align*}
+     f \smile g ( \rho) = f ( \rho_{|\Delta^{k-}}) g ( \rho_{|\Delta^{-l}} ).
+ \end{align*}
+ \begin{remark} The cup product fails to be (graded) commutative on the cochain complex $C^\ast ( M; \mathbb{Z})$, it only becomes commutative after taking homology. 
+ \end{remark}
+ \subsection{Comparing the cup product and wedge product}
+ Recall that we established the isomorphism 
+ \begin{align*}
+     H^\ast_{DR} (M) \cong H^\ast_{sing} (M ; \mathbb{R} )
+ \end{align*}
+ by associating to $ [ \eta ] \in \Omega^k (M)$ the (smooth) cochain
+ \begin{align*}
+     \int_{\Delta^k} \rho^\ast \eta .
+ \end{align*}
+ It clearly isn't the case that 
+ \begin{align*}
+     \int_{\Delta^{k+l}} \rho^\ast ( \eta \wedge \omega ) =\bigg( \int_{\Delta^{k-}} \rho^\ast  \eta \bigg) \cdot \bigg( \int_{\Delta^{-l}} \rho^\ast  \omega \bigg) .
+ \end{align*}
+ Therefore the two products don't agree at the cochain level.
+ 
+ However they define the same product on the cohomology. The easiest proof of this fact goes through Čech cohomology. One shows the equivalence of Čech cohomology with de Rham cohomology—this will be covered in Ali's talk—and then show the equivalence of Čech cohomology with singular cohomology.  
+ \begin{remark}
+There is  also an argument  which relates the two products 
+ by way  of subdividing simplices(defining cohomolgy over cubic chains is more amenable for this type of argument)  but that is also quite technical.  
+ \end{remark}
+ \subsection{Intersection Theory of Manifolds}
+ Let $Y$ be an oriented manifold and suppose that $X$ and $Z$ are closed oriented submanifolds of complementary dimensions. The intersection number $I ( X , Z)$ is obtained by counting(with sign) the points in the intersection $ X \cup Z$. This number turns out to be invariant under homotopy. 
+ 
+ Of course to even get isolated intersections one must add some hypothesis. This is done via the following `Parametric Transversality Theorem'. 
+ \begin{theorem}
+Let $S,X,Y,Z$ be smooth manifolds, $F: S \times X \rightarrow Y$ and $ g: Z \rightarrow Y$ be  smooth maps. Suppose that $ F \pitchfork g$, then for $ s \in S$, the map $F(s, \cdot): X \rightarrow Y$ is transverse to $g$ if and only if $s$ is a regular value of
+\begin{align*}
+    (S \times X) \times_{Y} Z \rightarrow S.
+\end{align*}
+ \end{theorem}
+ In the simpler case $ Z \subset Y$, the fibered product becomes $     (S \times X) \times_{Y} Z = F^{-1} (Z).$ The moral of the theorem is that given a large enough family $S$ of perturbations of $f: X \rightarrow Y$, one can make $X$ transverse to $Z$. 
+
+ \begin{definition}
+Let $ f: X \rightarrow Y $ and $g: Z \rightarrow Y$ are as above. Suppose that $ f \pitchfork g$. The intersection number $ I (f,g) $ is the signed count of the points in the intersection $ \mathbb{I } = \lbrace (x, z) \in X \times Z: f (x) = g (z) \rbrace$. A point $(x,z) \in \mathbb{I}$ is counted with $ + $ sign if a positively oriented basis of $T_x X$ and a positively oriented basis  of $T_z Z$ gives a positively oriented basis of $T_{f(x)} Y$ when concatenated and transported by $ d f_x$ and $ dg_z$, respectively.
+ \end{definition}
+
+ The intersection number $I (f, g)$ is invariant under homotopy. 
+ 
+ The story in fact extends to the case when $X$ and $Z$ aren't of complementary dimension. This time, when $ X \pitchfork Z$, the intersection is a closed, oriented submanifold of dimension equal to $ \dim X + \dim Z - \dim Y$.  However to quantify this intersection $X \cap Z$ in a manner that is invariant under homotopy, one must consider $X \cap Z$ in a different, more relaxed, class of objects. There is more than one way to do this. One could consider, say, cobordism classes of submanifolds. We will instead consider the homology class $[X \cap Z ]$ of the intersection.
+ \subsection{Cup Product and Intersection Number}
+ In singular homology of an oriented manifold $Y^n$, an oriented submanifold $X^{i} $ determines a homology class $ [X] \in H_i (Y)$, which is related by Poincaré duality to a cohomology class $ [X]^\ast \in H^{n-i} (X ; \mathbb{Z} )$. It turns out that intersection is dual to the cup product in the following sense. 
+ \begin{theorem}
+     Given transversely intersecting oriented submanifolds $X, Z \subset Y$, we have 
+     \begin{align*}
+         [X]^\ast \smile [Z]^\ast = [X \cap Z]^\ast.
+     \end{align*}
+ \end{theorem}
+ We want to prove the de Rham version of the above theorem. 
+ \subsection{Intersection Form and Wedge Product}
+ Let $M$ be an oriented $m$-dimensional manifold admitting a finite good cover. Instead of submanifolds, we'll consider maps $ f: P \xrightarrow{} M$ of  compact, oriented $k$-manifolds, a more general class. By Poincaré duality, there is a unique compactly supported deRham cohomology class $[ \tau_f] \in H^{m-k}_c (M)$ satisfying
+ \begin{align*}
+     \int_{M} \omega \wedge \tau_f = \int_{P} f^\ast \omega 
+ \end{align*}
+ for any closed $k$-form $ \omega \in \Omega^k (M)$.
+
+ For a compact oriented codimension-$k$ submanifold $ Q^{m-k} \subset M$, we set $[ \tau_{Q}] := [\tau_{i}] \in H^{k}_{c}(M)$, where $ i : Q \rightarrow M$ is the inclusion map. 
+
+\begin{theorem}
+    The previously defined intersection number can be computed as follows.
+\begin{align*}
+    I( f, Q) = \int_{M} \tau_f \wedge \tau_Q = \int_{Q} \tau_f = (-1)^{k(m-k)}\int_{P}  f^\ast \tau_Q 
+\end{align*}
+\end{theorem}
+\begin{remark}
+One might ask why we took $Q $ to be a submanifold, rather than a general map $g: Q \rightarrow M$ as we did previously while defining the intersection number. There are two reasons. One reason being that in order to prove the above, we'll use a special representative of $ [\tau_Q]$, the so-called `Thom form', which will be defined in a small neighborhood of $Q$. 
+
+The other reason is that all intersection numbers may be reduced to the above form, that is, we have $ I ( f, g) = I( f \times g, \Delta)$, where $f: P \rightarrow M$ and $ g: Q \rightarrow M$ are maps, and $ \Delta  \subset M \times M$ is the diagonal. 
+\end{remark}
+ \subsection{Localization Principle}
+ Let $S^k \subset M^n$  be a a compact oriented submanifold of dimension $k$. One can pick a form  $ \eta_S$ which represents its compactly supported Poincaré dual so that $\eta_S$ is supported in an arbitrarily small neighborhood of $S$. We argue as follows: Consider an open neighborhood $W$ of $S$. Let $ \eta' \in H^{n-k}_c (W)$ be the compactly supported Poincaré dual to $S$. Since $ \eta'$ is compactly supported one can extend $ \eta'$ into $ \eta \in H^{n-k}_c ( M)$ by defining it to be $0$ outside $W$. Then we observe that $\eta$ is the Poincaré dual to $S$ in $M$, since
+ \begin{align*}
+     \int_S \iota^\ast  \omega = \int_{W} \omega \wedge \eta' = \int_{M} \omega \wedge \eta.  
+ \end{align*}
+ This is called the localization principle. 
+ \subsection{Tubular neighborhoods}
+ By the localization principle, we observed that the Poincaré dual of a submanifold $S \subset M$ doesn't interact with the topology at large of $M$, it is determined solely by the local picture around $S$. We'll show that $S$ has particularly nice  neighborhoods which are called  tubular neighborhoods. 
+ %\subsubsection{Normal Bundles}
+ \begin{definition}[Normal Bundle]
+  Suppose that $ Z \subset Y$ is a submanifold. We define the normal bundle of $Z$ in $Y$ to be the quotient vector bundle
+  \begin{align*}
+      N_Y Z = \faktor{TY_{|Z}}{TZ} .
+  \end{align*}
+ \end{definition}
+ One could also view the normal bundle $ N_Y Z$ as a subbundle of $TY_{|Z}$, albeit non-canonically. To do so, we equip $Y$ with a Riemannian metric $g$, then consider the subbundle $\textbf{Perp}Z$ of subspaces which are perpendicular to $TZ$. Then under the quotient map 
+ \begin{align*}
+     \textbf{Perp}Z \rightarrow \faktor{TY_{|Z}}{TZ}
+ \end{align*}
+ the fibers are isomorphic. Therefore $ \textbf{Perp} Z \cong N_Y Z$. 
+\begin{theorem}[Tubular Neighborhood Theorem]
+Let $ Z \subset Y$ be a closed submanifold. Then
+there exists an open neighborhood $U \subset N_Y Z$ of the zero section, which we identify with $Z$, which can be smoothly embedded 
+\begin{align*}
+    U \rightarrow Y
+ \end{align*}
+ so that 
+ \begin{itemize}
+     \item it equals the identity on $Z$. 
+     \item it can be prescribed to first order.
+ \end{itemize}
+\end{theorem}
+Now we'll define the dual of $Z$ inside $U$ and implant it inside $Y$ by the above diffeomorphism. Of course, in order to implant the form, we need to control its support well. This is no point of concern for the compactly supported dual as we have have seen in the previous section, but for the other one the problem isn't as simple. For this reason we take a detour in vertically compactly supported forms. 
+\subsubsection{Vertically Compactly Supported Forms}
+
+Let $ E \xrightarrow[]{f}Z$ be a submersion(a smooth map whose differential is surjective at each point). 
+\begin{definition}
+A differential form $ \omega \in \Omega^\ast ( E)$ has compact vertical support if for every $ z \in Z$, the restriction to the fiber  $\iota^\ast \omega \in \Omega^\ast ({f^{-1} (z)})$ is compactly supported. 
+\end{definition}
+The forms of compact vertical support gives us a commutative differential graded algebra equipped with the wedge product and exterior derivative. We denote it by
+\begin{align*}
+    \Omega^\ast_{vc} ( E ).
+\end{align*}
+\begin{remark}
+Note that the map $ f: E \rightarrow Z$ is a crucial part of the information which defines the above complex but the notation omits this, so best be cautious!
+\end{remark}
+
+Suppose moreover that $Z$ is connected and that the fibers of $E$ can be coherently oriented and are of dimension $r$. Then we can define ``integration along fibers", a chain map
+\begin{align*}
+    \Omega^\ast_{vc} (E) \rightarrow \Omega^{\ast-r} ( Z).
+\end{align*}
+\begin{theorem}[Thom Isomorphism]
+Let $E \rightarrow Z$ be an oriented vector bundle of rank $r$. Then
+\begin{align*}
+    H^\ast_{vc} (E) \rightarrow H^\ast ( Z)
+\end{align*}
+is an isomorphism!
+\end{theorem}
+The preimage of $1$ is called the Thom class, often denoted $ \Phi_E$. The inverse map is given by pullback and wedging with the Thom form. 
+\begin{proposition}
+ Any closed form $ \omega \in \Omega^r_{vc} (E)$   which integrates to $1$ on each fiber represents the Thom class. 
+\end{proposition}
+
+ \section{Lecture 10: Thom isomorphism and intersection theory}
+ 
+ In the previous lecture, we have talked about \textit{(closed) Poincaré dual} and \textit{compact Poincaré dual} of submanifolds closed (as a subset) and/or compact, respectively. Now, let's take a look at the following example.
+ \begin{example}
+ Let $M=S^1\times \R$, i.e. the infinite cylinder in both directions. Let $S_1=S^1\times \{0 \}$ and $S_2=\{(\frac{-\pi}{2},x): x\in\R\}$, see figure \ref{fig:Poincaré duals}. For $S_2$, we are looking for an $\omega\in H^1(M)$ such that for every $\eta\in H_c^1(M)$, we have $\int_{S_2}\eta=\int_M\eta\wedge \omega$. This $\omega$ is the closed Poincaré dual of $S_2$. Let $\eta=d\rho$, where $\rho$'s dependence on $x$ is shown in figure \ref{fig:rho}. Then, $\eta=d\rho$ is a generator of $H_c^1(M)$, since $d\rho$ is compactly supported but $\rho$ is not, and it clearly closed. Plugging this in, we obtain $\int_{S_2}d\rho=\int_Md\rho\wedge \omega$. The integral on the left-hand side is $1$,  thus $\omega$ should depend on $\theta$. Indeed, a direct computation by Fubini's theorem shows that $d\omega=\frac{d\theta}{2\pi}$. Note that $S_2$ does not have a compact Poincaré dual. Now, let's talk about $S_1$. For the closed version, $\int_{S_1}d\rho=\int_M d\rho\wedge \omega$ needs to be satisfied as in the previous case. The integral on the left-hand side is zero, since $\rho$ depends only on $x$. We can pick $\omega$ to be equal to zero. For the cohomology of the Compact Poincaré dual of $S_1$, $\int_{S_1}\eta=\int_M\eta\wedge \tilde{\omega}$ has to be satisfied for every $\eta\in H^1(M)$. By picking, $\eta=d\theta$, which is the generator, we obtain $\int_{S_1}d\theta=\int_M d\theta\wedge\tilde{\omega}$. The left hand-side is equal to $2\pi$, so, we can pick $\tilde{\omega}=-d\rho$, referring to $d\rho$ for $S_2$ above.
+ \end{example} 
+ \begin{figure}[!ht]
+	\centering
+	\includegraphics[width=0.70\linewidth]{Poincare duals.png}
+    \caption{$S_1$ and $S_2$ are denoted by the green and red curves respectively.}
+    \label{fig:Poincaré duals}
+\end{figure}
+ \begin{figure}[!ht]
+	\centering
+	\includegraphics[width=0.90\linewidth]{rho.png}
+    \caption{$\rho$'s dependence on $x$, the upper value is $1$.}
+    \label{fig:rho}
+\end{figure}
+\begin{remark}
+The previous example shows that for a compact submanifold, like $S^1$, the compact and closed Poincaré duals might differ. Also note that, by abuse of language, we call the representative of the unique cohomology class obtained by the Poincaré duality, which is called the Poincaré dual, the Poincaré dual as well. For, instance, in the above example, we said that ''we can pick $\omega$ to be equal to zero'', and we call the 1-from equal to 0 the Poincaré dual. Yet, what we actually mean is the unique cohomology class that corresponds to our submanifold via the Poincaré duality is the zero class. For that matter, any exact $\omega$ would also be the Poincaré dual in that case. 
+\end{remark}
+
+\begin{remark}
+By the localization argument, we know that we can actually choose the Poincaré dual of $S_1$ so that its support is arbitrarily close to $S_1$. For instance, the compact Poincaré dual $-d\rho$ is not necessarily as near to $S^1$ as we want to. However, we can change the $\rho$ so that the portion where it is not stabilized (where it is growing) can be made arbitrarily small so that support of $d\rho$ is as near to $S^1$ as we wish. Let's consider the case of $S_2$, the closed Poincaré dual of is $\omega=d\theta$, which is supported everyhwere. However, by choosing $g$ so that $\int g=1$ and g is supported near $\frac{-\pi}{2}$, we can also set $\omega=g(\theta)d\theta$. Clearly, this is also a representative with the additional property that its support is as close to $S_2$ as we wish.
+\end{remark}
+Let $Z\subset M$ be a closed submanifold. In the previous lecture, we defined $\Omega^*_{vc}(E\to Z)$, where $E\to Z$ is a submersion. Today we will learn about the integration along fibers operation $\pi_*:\Omega^*_{vc}(E)\to \Omega^{*-r}_{dR}(Z)$, where $r$ is the rank of the fibers.
+ \begin{theorem}[Thom Isomorphism Theorem]
+Assume that $E$ is an oriented vector bundle of rank $r$, then $H^*_{vc}(E)\xrightarrow{\pi_*} H^{*-r}_{dR}(Z)$ is an isomorphism. This isomorphism is called the Thom isomorphism and  $[\Phi_E]\coloneqq\pi_*^{-1}(1)$ is called the Thom class.
+\end{theorem}
+\begin{remark}
+Recall that we did a simpler case of this, we talked about the map $\pi_*: \Omega_c^*\left(M \times \R\right) \rightarrow \Omega^{*-1}(M)$ when discussing the Poincaré Lemma for the compactly supported forms. 
+\end{remark}
+\begin{remark}
+The inverse of $\pi_*$ is given by first taking the pullback and then taking the wedge product with $\Phi_E$.
+\end{remark}
+Related to this theorem, we have the following proposition:
+\begin{proposition}
+Any closed $\Phi\in \Omega^r_{vc}(E)$ which integrates to $1$ in all fibers represents the Thom class.
+\end{proposition} 
+
+Let's start with integration along fibers. Suppose $f:E^{n+r}\to Z^n$ is a submersion.  Recall that this means that the differential is surjective at all points, i.e. $df_e:T_eE\to T_{f(e)}Z$ is surjective at $e\in E$. We want to choose a splitting of this at all $e$, i.e. a map $T_{f(e)}Z\to T_eE$ in a smoothly varying way such that it is also a right inverse of $df_e$. The images give us ''horizontal subbundle''. The idea is basically as follows:
+\begin{itemize}
+\item Choose a cover by submersion charts. 
+\item In each chart, such right inverses can be found.
+\item Then patch together these using a partition of unity (can multiply linear maps with scalars).
+\end{itemize}
+
+This is called an \textit{Ehresmann connection}. Once we have this, we can lift vectors up. Being able to lift vectors up at each point of the fiber lets us define the integration along fibers map: $\Omega^N_{vc}(E)\xrightarrow{f_*} \Omega^{N-r}(Z)$ for any $N$. We will describe this in a moment, but first, we need to add an orientability condition: Suppose that the vertical tangent bundle over $E$ is oriented. Note that this implies each fibers are oriented in a smoothly varying manner. Now, we can define $f_*(\omega)$ as follows: Given $p\in Z$ and $v_1,\cdots,v_{n-r}\in T_p(Z)$, define $f_*(\omega)_p(v_1,\cdots,v_{n-r})=\int_{f^{-1}(p)} \omega(\overline{v_1},\cdots,\overline{v_{n-r}},\cdots)$. Note that here $\overline{v_i}$ denotes the lifted up vectors. How do we know that this does not depend on the lift? If $\tilde{v_i}$ denotes a different lifting of the vectors. Then, $\overline{v_i}-\tilde{v_i}$ has to be vertical since they denote the same vector below. This implies that the form given by taking the difference vanishes since fibers are $r$-dimensional and we plug in $N$ vectors. Thus, the integral along the fiber we just defined does not depend on the lifts. 
+\begin{proposition}[Projection Formula]
+Let $\pi:E\to Z$ be an oriented (the vertical tangent bundle over E) submersion with fiber rank $r$, $\tau$ a form on $Z$ and $\omega$ a form on $E$ with compact support along the fiber. Then 
+$$\pi_*((\pi^*\tau)\wedge \omega)=\tau\wedge \pi_*\omega.$$
+\end{proposition}
+\begin{proof}
+Let $\tau$ be a $k$-form and $\omega$ be an $r+\ell$ form. Let $\varepsilon(\sigma)$ denote the sign of $\sigma$, and $\tilde{v_i}$ denote the lift of $v_i$. Let $e_i$ be vectors in the vertical tangent bundle over $E$. Let's compute the left-hand side.
+$$
+\begin{aligned}
+& \left(\left(\pi^* \tau \wedge \omega\right)(p, v_1, \ldots, v_{k+\ell})\right)\left(e_1, \ldots, e_r\right) \\
+& =\left(\pi^* \tau \wedge \omega\right)\left(\widetilde{v}_1, \ldots, \widetilde{v}_{k+\ell}, e_1, \ldots, e_r\right) \\
+& =\sum_{\sigma \in S_{k, \ell}} \varepsilon(\sigma) \tau_p\left(v_{\sigma(1)}, \ldots, v_{\sigma(k)}\right) \omega\left(\widetilde{v}_{\sigma(k+1)}, \ldots, \widetilde{v}_{\sigma(k+\ell)}, e_1, \ldots, e_r\right) \\
+& =\sum_{\sigma \in S_{k, \ell}} \varepsilon(\sigma) \tau_p\left(v_{\sigma(1)}, \ldots, v_{\sigma(k)}\right)\left(\omega(\left.p, v_{\sigma(k+1)}, \ldots, v_{\sigma(k+\ell)}\right)\right)\left(e_1, \ldots, e_r\right)
+\end{aligned}
+$$
+Applying $\pi_*$ yields,
+$$
+\begin{aligned}
+& \left(\pi_*\left(\pi^* \tau \wedge \omega\right)\right)_p\left(v_1, \ldots, v_{k+\ell}\right) \\
+& =\int_{E_p}\left(\pi^* \tau \wedge \omega\right)(p, v_1, \ldots, v_{k+\ell}) \\
+& =\sum_{\sigma \in S_{k, \ell}} \varepsilon(\sigma) \tau_p\left(v_{\sigma(1)}, \ldots, v_{\sigma(k)}\right) \int_{E_p} \omega(p, v_{\sigma(k+1)}, \ldots, v_{\sigma(k+\ell)}) \\
+& =\sum_{\sigma \in S_{k, \ell}} \varepsilon(\sigma) \tau_p\left(v_{\sigma(1)}, \ldots, v_{\sigma(k)}\right)\left(\pi_* \omega\right)_p\left(v_{\sigma(k+1)}, \ldots, v_{\sigma(k+\ell)}\right) \\
+& =\left(\tau \wedge \pi_* \omega\right)_p\left(v_1, \ldots, v_{k+\ell}\right) .
+\end{aligned}
+$$
+The last computation depends on the fact that $\tau_p(v_{\sigma(1)}, \cdots, v_{\sigma(k)})$ is constant.
+\end{proof}
+Given a compact, $k$-dimensional, oriented manifold $N$ with boundary embedded into $Z$. We can restrict the bundle $E\to Z$ to $N$, which is again an $r$-dimensional bundle over $N$: $f:E|_N\to N$. We have the following proposition.
+\begin{proposition}
+Let $N^k$ be a compact, oriented, manifold with boundary embedded into $Z$. Then, for $\tau\in \Omega(E|_N)$,
+$$\int_N f_*\tau=\int_{E|_N}\tau,$$
+Here, $f_*$ is the integration along the fiber map.
+\end{proposition}
+\begin{remark}
+Notice that, essentially, this proposition tells that first integrating along the fibers and then integration on the base is equal to integrating in the total space. Notice the connection with the \textit{Fubini's Theorem}. The proposition can be proven by covering with the submersion charts and then computing directly. On the charts, this is precisely the \textit{Fubini's Theorem}. 
+\end{remark}
+\begin{proposition}
+Integrating along the fibers commutes with exterior differentiation, i.e. $d(f_*\omega)=f_*(d\omega)$.
+\end{proposition}
+\begin{proof}
+Before we start the proof, note that given any two $k$-forms $\eta\neq\eta'$, we can always construct an oriented $N^k\subset Z$ such that $\int_N \eta\neq \int_N\eta'$. This is true because, if they differ at a point, then they differ on a $k$-dimensional subspace. One of them is greater than the other and by choosing a coordinate patch close to this subspace, we can obtain $N$ this way. Now, back to the proof.  Let's check this for $\omega\in\Omega_{vc}^{n+r}(E)$. We need to show that for all compact domains $U\subset M$ with smooth boundary $\int_U f_*(d\omega)=\int_U d(f_*\omega)$ . By Stokes' Theorem, the latter is equal to $\int_{\partial U}f_*\omega$. By the Fubini-like theorem above, $\int_Uf_*(d\omega)=\int_{f^{-1}(U)} d\omega$. Again, using the Stokes' Theorem, this is equal to (taking vertical and horizontal boundaries into account and the fact that $\omega$ is zero on the horizontal boundary) $\int_{f^{-1}(\partial U)\cup {\text{horizontal boundary}}}\omega$. Again by the previous Fubini-like theorem , this last expression is equal to $\int_{\partial U}f_*\omega$ as desired. For forms other than the top forms, one can do this by using the proposition above.
+\end{proof}
+Now, we are ready to prove the Thom Isomorphism Theorem. So far, we have done everything in the general setting where $E\to Z$ was a submersion. But, now, we have to restrict our attention to vector bundles. So, let $\pi:E\to Z$ be an oriented vector bundle, and $\Phi\in\Omega_{vc}^n(E)$ be closed and with fiber integral equal to $1$. Here is a sketch of the proof:
+\begin{proof}
+Consider the following diagram from the MV sequences for $Z=U\cup V$. Both rows are exact.
+\begin{center}
+\begin{tikzcd}
+0 \arrow{r}&\Omega_{vc}^*(E)\arrow{r}\arrow{d}{\pi_*}
+&\Omega_{vc}^*(E|_U)\oplus\Omega_{vc}^*(E|_V)\arrow{r}\arrow{d}{\pi_*}
+&\Omega_{vc}^*(E|_{U\cap V})\arrow{d}{\pi_*}\arrow{r}&0\\
+0\arrow{r}&\Omega(Z)\arrow{r}\arrow{u}{\wedge \Phi}&\Omega(U)\oplus\Omega(V)\arrow{r}\arrow{u}{\wedge \Phi}&\Omega(U\cap V)\arrow{r}\arrow{u}{\wedge \Phi}&0
+\end{tikzcd}
+\end{center}
+It can be seen that squares are commutative with respect to both vertical maps. The map that first goes up and then comes down is the identity map (use the projection formula). We have two long exact sequences. All squares commute, including the one involving the connecting homomorphism. By using the 5 Lemma and starting from the case $Z\times \R^n\to Z$, it turns out that these maps are isomorphism in the homology, i.e. $\wedge \Phi$ map is the inverse of $\pi_*$ in the homology. Then by using disjoints unions, can prove this for any base $Z$. This completes the proof. 
+\end{proof}
+Note that $\Phi$ represents the closed PD, and if $Z$ also the compact PD. Notice that this does not mean that closed and compact PD's coincide, it just means that they are both represented by the same form. Consider the example at the beginning of this lecture. 
+\begin{definition}
+Let $E\to B$ be an oriented vector bundle and $s$ be a section. The \textbf{Euler class} of $E$ is defined to be $s^*[\Phi]$, where $\Phi\in \Omega_{vc}^n(E)$ is a Thom form.
+\end{definition}
+Euler class is an example of a characteristic class. Assume, moreover, that $B$ is oriented, $r$-dimensional, and compact, then $\int_B s^*\Phi\in \R$ is called the \textbf{Euler number}.
+\begin{remark}
+The Euler class does not depend on the section since all sections are homotopic and homotopic maps induce the same map on homology. Nevertheless, one can always take $s$ to be the zero section as well. 
+\end{remark}
+By using the projection formula, $s^*[\Phi]\wedge 1=\pi_*([\Phi]\wedge[\Phi])$. By assuming that $B^r$ is oriented and compact, $\int_B s^*\phi=\int_E\Phi\wedge\Phi$, the latter is equal to the intersection number of the zero section with itself ($\Phi$'s are not the same), so this is an integer. 
+
+\subsection{Intersection theory via deRham theory}
+\begin{theorem}
+Let $M$ be an oriented $m$-manifold without boundary that admits a finite good cover, let $Q\subset M$ be a.compact, oriented $(m-\ell)$-dimensional submanifold without boundary, let $P$ be.a compact oriented $\ell$- manifold without boundary, let $f:P\to M$ be a smooth map, and let $\tau_f\in \Omega_c^{m-\ell}(M)$ and $\tau_Q\in \Omega_c^{\ell}(M)$ be closed forms dual to $f$ and $Q$, respectively. Then, the intersection number of $f$ and $Q$ is given by
+$$f\cdot q=\int_M \tau_f\wedge\tau_Q=\int_Q \tau_f=(-1)^{\ell(m-\ell)}\int_P f^*\tau_Q.$$ 
+\end{theorem}
+We are going to show that the first quantity is equal to the last integral. To be continued...
+
+\subsection{Poincare-Hopf theorem}
+
+
+\end{document}
