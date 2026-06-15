@@ -70,6 +70,38 @@
             margin-bottom: 2rem;
         }
 
+        /* Schedule Table Styles */
+        table.schedule-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 3rem;
+            background-color: var(--card-bg);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+
+        table.schedule-table th, table.schedule-table td {
+            padding: 1rem;
+            border: 1px solid var(--border-color);
+            text-align: left;
+        }
+
+        table.schedule-table th {
+            background-color: var(--primary-color);
+            color: #ffffff;
+            font-weight: 600;
+        }
+
+        table.schedule-table tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        table.schedule-table .break-row {
+            background-color: #eef2f5;
+            font-style: italic;
+            color: #555;
+        }
+
+        /* Talk Card Styles */
         .talk-card {
             background-color: var(--card-bg);
             border: 1px solid var(--border-color);
@@ -134,7 +166,7 @@
     <header>
         <h1>Geometry in Istanbul II</h1>
         <p><strong>Date:</strong> July 6, 2026</p>
-        <p><strong>Location:</strong> Koç University, Rumelifeneri Campus, Istanbul</p>
+        <p><strong>Location:</strong> Koç University, Rumelifeneri Campus, Room SCI103, Istanbul</p>
         <p><strong>Organizers:</strong> Umut Varolgüneş & Ivan Cheltsov</p>
     </header>
 
@@ -142,6 +174,65 @@
         <div class="intro">
             <p>Welcome to <strong>Geometry in Istanbul II</strong>. This 1-day event is the second iteration of our gathering (following <a href="https://umutvg.github.io/geoistI.html" target="_blank">Geometry in Istanbul I</a>), bringing together researchers and mathematicians to discuss recent developments in geometry and related fields.</p>
         </div>
+
+        <h2 class="section-title">Schedule</h2>
+        <table class="schedule-table">
+            <tr>
+                <th>Time</th>
+                <th>Event / Title</th>
+                <th>Speaker</th>
+            </tr>
+            <tr class="break-row">
+                <td>09:30 &ndash; 10:00</td>
+                <td>Arrival</td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>10:00 &ndash; 11:00</td>
+                <td>Talk 1: Tetragonal conic bundles</td>
+                <td>Yuri Prokhorov</td>
+            </tr>
+            <tr class="break-row">
+                <td>11:00 &ndash; 11:15</td>
+                <td>Short Break</td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>11:15 &ndash; 12:15</td>
+                <td>Talk 2: Invariants in equivariant birational geometry</td>
+                <td>Yuri Tschinkel</td>
+            </tr>
+            <tr class="break-row">
+                <td>12:15 &ndash; 13:30</td>
+                <td>Lunch</td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>13:30 &ndash; 14:30</td>
+                <td>Talk 3: Wall-crossing invariant combinations of Welschinger numbers for rational surfaces</td>
+                <td>Sergey Finashin</td>
+            </tr>
+            <tr class="break-row">
+                <td>14:30 &ndash; 15:00</td>
+                <td>Coffee Break</td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>15:00 &ndash; 16:00</td>
+                <td>Talk 4: Shimura varieties modulo p with many compact factors</td>
+                <td>Oliver Bültel</td>
+            </tr>
+            <tr class="break-row">
+                <td>16:00 &ndash; 16:15</td>
+                <td>Short Break</td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>16:15 &ndash; 17:15</td>
+                <td>Talk 5: The Infinitesimal Dilogarithm</td>
+                <td>Sinan Ünver</td>
+            </tr>
+        </table>
 
         <h2 class="section-title">Speakers & Abstracts</h2>
 
