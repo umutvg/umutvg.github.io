@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fukaya Categories, Sheaves and Quantization</title>
+    <style>
+        :root {
+            --primary: #1e3a8a;
+            --primary-light: #3b82f6;
+            --accent: #0284c7;
+            --dark: #0f172a;
+            --light: #f8fafc;
+            --gray: #64748b;
+            --border: #e2e8f0;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            color: var(--dark);
+            background-color: var(--light);
+            line-height: 1.6;
+        }
+
+        header {
+            background: linear-gradient(135deg, var(--primary) 0%, #1e1b4b 100%);
+            color: white;
+            padding: 4rem 2rem;
+            text-align: center;
+        }
+
+        .header-content {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .badge {
+            display: inline-block;
+            background-color: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(8px);
+            color: #e0f2fe;
+            padding: 0.4rem 1rem;
+            border-radius: 9999px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            line-height: 1.2;
+        }
+
+        .meta-info {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            flex-wrap: wrap;
+            margin-top: 1.5rem;
+            font-size: 1.1rem;
+        }
+
+        .meta-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: rgba(255,255,255,0.08);
+            padding: 0.6rem 1.2rem;
+            border-radius: 8px;
+        }
+
+        nav {
+            background-color: white;
+            border-bottom: 1px solid var(--border);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .nav-container {
+            max-width: 1000px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            padding: 1rem;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: var(--dark);
+            font-weight: 500;
+            transition: color 0.2s;
+        }
+
+        nav a:hover {
+            color: var(--primary-light);
+        }
+
+        main {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 3rem 1.5rem;
+        }
+
+        section {
+            margin-bottom: 3.5rem;
+        }
+
+        h2 {
+            font-size: 1.75rem;
+            color: var(--primary);
+            margin-bottom: 1.25rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid var(--border);
+        }
+
+        p {
+            margin-bottom: 1rem;
+            color: #334155;
+            font-size: 1.05rem;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+        }
+
+        .card {
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+        }
+
+        .card h3 {
+            font-size: 1.2rem;
+            color: var(--dark);
+            margin-bottom: 0.3rem;
+        }
+
+        .card p.affiliation {
+            color: var(--gray);
+            font-weight: 500;
+            margin-bottom: 0;
+            font-size: 0.95rem;
+        }
+
+        .card a {
+            color: var(--accent);
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .card a:hover {
+            text-decoration: underline;
+        }
+
+        .sponsors-flex {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-top: 1.5rem;
+            background: white;
+            padding: 2rem;
+            border-radius: 12px;
+            border: 1px solid var(--border);
+        }
+
+        .sponsor-box {
+            text-align: center;
+            flex: 1;
+            min-width: 200px;
+        }
+
+        .sponsor-title {
+            font-weight: 700;
+            font-size: 1.2rem;
+            color: var(--primary);
+        }
+
+        .sponsor-desc {
+            font-size: 0.9rem;
+            color: var(--gray);
+        }
+
+        footer {
+            background-color: var(--dark);
+            color: var(--gray);
+            text-align: center;
+            padding: 2rem;
+            font-size: 0.9rem;
+            border-top: 1px solid var(--border);
+        }
+
+        @media (max-width: 640px) {
+            h1 { font-size: 1.8rem; }
+            .meta-info { flex-direction: column; gap: 0.75rem; }
+            .nav-container { gap: 1rem; font-size: 0.9rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="header-content">
+            <span class="badge">TÜBİTAK–JSPS Joint Research Project</span>
+            <h1>Fukaya Categories, Sheaves and Quantization</h1>
+            <div class="meta-info">
+                <div class="meta-item">
+                    📅 <strong>March 15–19, 2027</strong>
+                </div>
+                <div class="meta-item">
+                    📍 <strong>Koç University, İstanbul, Türkiye</strong>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <nav>
+        <div class="nav-container">
+            <a href="#about">About</a>
+            <a href="#speakers">Speakers</a>
+            <a href="#location">Location</a>
+            <a href="#organizers">Organizers</a>
+            <a href="#sponsors">Sponsors</a>
+        </div>
+    </nav>
+
+    <main>
+        <section id="about">
+            <h2>About the Workshop</h2>
+            <p>
+                The workshop <strong>Fukaya Categories, Sheaves and Quantization</strong> will take place at <strong>Koç University</strong> in İstanbul from <strong>March 15 to March 19, 2027</strong>. 
+                Organized under the framework of the bilateral <strong>TÜBİTAK–JSPS Joint Research Project</strong> between Koç University (Türkiye) and Kyoto University (Japan), 
+                this workshop brings together researchers working in symplectic geometry, microlocal sheaf theory, and homological mirror symmetry.
+            </p>
+            <p>
+                The primary aim of the workshop is to foster international collaboration and present recent breakthroughs regarding the structure and invariants of Fukaya categories, sheaves, and quantization.
+            </p>
+        </section>
+
+        <section id="speakers">
+            <h2>Speakers</h2>
+            <div class="grid">
+                <div class="card">
+                    <h3>Kaoru Ono</h3>
+                    <p class="affiliation">RIMS, Kyoto University</p>
+                </div>
+                <div class="card">
+                    <h3>Hiroshi Ohta</h3>
+                    <p class="affiliation">Nagoya University</p>
+                </div>
+                <div class="card">
+                    <h3>Yusaku Chiba</h3>
+                    <p class="affiliation">Ochanomizu University</p>
+                </div>
+                <div class="card">
+                    <h3>Kota Hattori</h3>
+                    <p class="affiliation">Keio University</p>
+                </div>
+                <div class="card">
+                    <h3>Tsukasa Ishibashi</h3>
+                    <p class="affiliation">Tohoku University</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="location">
+            <h2>Venue & Location</h2>
+            <p>
+                The workshop will be hosted by the <strong>Department of Mathematics</strong> at <strong>Koç University</strong>, located on the Rumelifeneri Campus in İstanbul, Türkiye.
+            </p>
+            <p style="margin-top: 0.5rem;">
+                <strong>Address:</strong> Koç University, Rumelifeneri Yolu, 34450 Sarıyer, İstanbul, Türkiye
+            </p>
+        </section>
+
+        <section id="organizers">
+            <h2>Organizers</h2>
+            <div class="grid">
+                <div class="card">
+                    <h3>Umut Varolgunes</h3>
+                    <p class="affiliation">Koç University, Türkiye</p>
+                    <p><a href="https://umutvg.github.io/" target="_blank" rel="noopener">Personal Website ↗</a></p>
+                </div>
+                <div class="card">
+                    <h3>Tatsuki Kuwagaki</h3>
+                    <p class="affiliation">Kyoto University, Japan</p>
+                    <p><a href="https://sites.google.com/view/tatsuki-kuwagaki/home" target="_blank" rel="noopener">Personal Website ↗</a></p>
+                </div>
+            </div>
+        </section>
+
+        <section id="sponsors">
+            <h2>Sponsorship & Support</h2>
+            <div class="sponsors-flex">
+                <div class="sponsor-box">
+                    <div class="sponsor-title">TÜBİTAK</div>
+                    <div class="sponsor-desc">Scientific and Technological Research Council of Türkiye</div>
+                </div>
+                <div class="sponsor-box">
+                    <div class="sponsor-title">JSPS</div>
+                    <div class="sponsor-desc">Japan Society for the Promotion of Science</div>
+                </div>
+                <div class="sponsor-box">
+                    <div class="sponsor-title">Koç University</div>
+                    <div class="sponsor-desc">İstanbul, Türkiye</div>
+                </div>
+                <div class="sponsor-box">
+                    <div class="sponsor-title">Kyoto University</div>
+                    <div class="sponsor-desc">Kyoto, Japan</div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2027 TÜBİTAK–JSPS Joint Research Project: Koç University & Kyoto University</p>
+    </footer>
+
+</body>
+</html>
